@@ -1,10 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\DDS",
     "\\Metadata",
     "\\NDS",
     "\\Stage"
   ],
-  "SelectedNode": "\\Metadata\\Metadata.sql",
+  "SelectedNode": "\\DDS\\AQI_DDS.sql",
   "PreviewInSolutionExplorer": false
 }

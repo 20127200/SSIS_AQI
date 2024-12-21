@@ -2,18 +2,23 @@
 <BuildLog xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ProjectInfo>
     <Name>AQI_Project</Name>
-    <LastWriteTime>2024-12-18T11:45:15.5319887Z</LastWriteTime>
+    <LastWriteTime>2024-12-20T13:18:49.0426955Z</LastWriteTime>
     <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
   </ProjectInfo>
   <LastBuildInfos>
     <ProjectBuildItemInfo>
       <Name>SourceToStage.dtsx</Name>
-      <LastWriteTime>2024-12-18T08:27:34.0902219Z</LastWriteTime>
+      <LastWriteTime>2024-12-20T13:18:36.1454291Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
       <Name>StageToNDS.dtsx</Name>
-      <LastWriteTime>2024-12-18T16:50:27.459252Z</LastWriteTime>
+      <LastWriteTime>2024-12-21T09:46:27.2140853Z</LastWriteTime>
+      <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
+    </ProjectBuildItemInfo>
+    <ProjectBuildItemInfo>
+      <Name>NDStoDDS.dtsx</Name>
+      <LastWriteTime>2024-12-21T11:05:01.494335Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
   </LastBuildInfos>

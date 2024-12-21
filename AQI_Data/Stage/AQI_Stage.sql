@@ -110,6 +110,8 @@ select distinct([county Name]) from [Stage_AQI_State_2023] where [county Name] n
 
 select distinct(county), state_name, lng, lat from Stage_uscounties 
 
+select distinct(county)from Stage_uscounties 
+
 SELECT state_name, county, COUNT(*) AS count
 FROM Stage_uscounties
 GROUP BY state_name, county
@@ -125,3 +127,23 @@ ORDER BY state_name, count DESC;
 select county_fips, county, state_name from Stage_uscounties group by county_fips, county, state_name order by county
 
 select county_fips, county, state_name, lng, lat from Stage_uscounties where county = 'Baltimore'
+
+SELECT 
+    u.county AS uscounty_name,
+    aqi.[county Name] AS aqi_county_name
+FROM 
+    Stage_uscounties u
+FULL OUTER JOIN 
+    Stage_AQI_State_2021 aqi
+ON 
+    u.county = aqi.[county Name]
+WHERE 
+    u.county IS NULL OR aqi.[county Name] IS NULL;
+
+	select distinct[Defining Parameter], [Defining Site] , sourceID from Stage_AQI_state_2023
+
+	select distinct * from Stage_AQI_State_2023 where [Defining Parameter] = 'Ozone' and [Defining Site] = '06-067-0012'
+
+
+select distinct ([county Name]), [County Code], [State Name], sourceID from Stage_AQI_State_2021
+
