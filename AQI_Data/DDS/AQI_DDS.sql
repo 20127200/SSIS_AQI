@@ -28,6 +28,7 @@ CREATE TABLE [dim_date](
 
 CREATE TABLE [dim_county] (
 	[county_fips_sk] int identity (1,1),
+	[state_code_sk] int,
 	[county_fips_nk] varchar(50),
 	[county_name] varchar(50),
 	[county_name_full] varchar(50),
@@ -38,6 +39,7 @@ CREATE TABLE [dim_county] (
 	[created_date] datetime,
 	[updated_date] datetime,
 	constraint nds_county_pk primary key ([county_fips_sk]),
+	constraint dim_county_state_fk foreign key ([state_code_sk]) references [dim_state]([state_code_sk]),
 )
 
 CREATE TABLE [dim_category] (
@@ -51,7 +53,6 @@ CREATE TABLE [dim_category] (
 CREATE TABLE [fact_aqi] (
 	[aqi_sk] int identity (1,1),
 	[date_sk] int,
-	[state_code_sk] int,
 	[county_fips_sk] int,
 	[category_sk] int,
 	[aqi] numeric(20,0),
@@ -62,9 +63,22 @@ CREATE TABLE [fact_aqi] (
     [updated_date] datetime,
 	constraint fact_aqi_pk primary key ([aqi_sk]),
 	constraint fact_aqi_county_fk foreign key ([county_fips_sk]) references [dim_county]([county_fips_sk]),
-	constraint fact_aqi_state_fk foreign key ([state_code_sk]) references [dim_state]([state_code_sk]),
 	constraint fact_aqi_category_fk foreign key ([category_sk]) references [dim_category]([category_sk]),
 	constraint fact_aqi_date_fk foreign key ([date_sk]) references [dim_date]([date_sk])
 )
 
-select* from dim_date
+select * from fact_aqi a 
+join dim_county b on a.county_fips_sk = b.county_fips_sk 
+join dim_date c on a.date_sk = c.date_sk
+join dim_state d on d.state_code_sk = b.state_code_sk 
+where county_name = 'Butler'and c.year = 2021 and state_name = 'Alabama'
+
+select* from dim_county where state_code_sk = 1
+select * from dim_date
+
+SELECT year, quarter, month, COUNT(*)
+FROM dim_date
+GROUP BY year, quarter, month
+HAVING COUNT(*) > 1;
+
+TRUNCATE TABLE fact_aqi

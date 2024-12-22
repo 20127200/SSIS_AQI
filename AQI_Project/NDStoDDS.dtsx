@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="NDStoDDS"
   DTS:PackageType="5"
-  DTS:VersionBuild="107"
-  DTS:VersionGUID="{F94A8014-DFDA-4827-BDEC-D8D03F23E41C}">
+  DTS:VersionBuild="119"
+  DTS:VersionGUID="{233CE104-94F3-4ADB-B3E2-5B9A24510C3E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -949,7 +949,7 @@ where [refTable].[category_name] = ?</property>
                   expressionType="Notify"
                   name="SqlCommandParam"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_county]) [refTable]
-where [refTable].[county_name] = ?</property>
+where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -980,12 +980,12 @@ where [refTable].[county_name] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="lng" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="lng" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\dim_county processing\nds_county.Outputs[OLE DB Source Output].Columns[county_name]};</property>
+                  name="ParameterMap">#{Package\dim_county processing\nds_county.Outputs[OLE DB Source Output].Columns[county_name]};#{Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output].Columns[state_sk]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1020,6 +1020,22 @@ where [refTable].[county_name] = ?</property>
                           dataType="System.String"
                           description="Specifies the column in the reference table that a column joins."
                           name="JoinToReferenceColumn">county_name</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\dim_county processing\Check exist.Inputs[Lookup Input].Columns[state_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_sk"
+                      lineageId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output].Columns[state_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
                         <property
                           dataType="System.Null"
                           description="Specifies the column in the reference table from which a column is copied."
@@ -1286,6 +1302,12 @@ where [refTable].[county_name] = ?</property>
                       cachedName="lng"
                       externalMetadataColumnId="Package\dim_county processing\dim_county.Inputs[OLE DB Destination Input].ExternalColumns[lng]"
                       lineageId="Package\dim_county processing\nds_county.Outputs[OLE DB Source Output].Columns[lng]" />
+                    <inputColumn
+                      refId="Package\dim_county processing\dim_county.Inputs[OLE DB Destination Input].Columns[state_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_sk"
+                      externalMetadataColumnId="Package\dim_county processing\dim_county.Inputs[OLE DB Destination Input].ExternalColumns[state_code_sk]"
+                      lineageId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output].Columns[state_sk]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1342,6 +1364,10 @@ where [refTable].[county_name] = ?</property>
                       dataType="str"
                       length="50"
                       name="lng" />
+                    <externalMetadataColumn
+                      refId="Package\dim_county processing\dim_county.Inputs[OLE DB Destination Input].ExternalColumns[state_code_sk]"
+                      dataType="i4"
+                      name="state_code_sk" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1504,6 +1530,324 @@ where [refTable].[county_name] = ?</property>
                       refId="Package\dim_county processing\dim_county update.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\dim_county processing\dim_county update.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\dim_county processing\Lookup with dds_state"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup with dds_state"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_state]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_state]) [refTable]
+where [refTable].[state_name] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_nk" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="state_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\dim_county processing\Lookup with dds_state.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[msi.AQI_DDS]"
+                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_DDS]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\dim_county processing\Lookup with dds_state.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\dim_county processing\Lookup with dds_state.Inputs[Lookup Input].Columns[state_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="state_name"
+                      lineageId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_name</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\dim_county processing\Lookup with dds_state.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output].Columns[state_sk]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output].Columns[state_sk]"
+                      name="state_sk"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">state_code_sk</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\dim_county processing\Lookup with dds_state.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\dim_county processing\Lookup with dds_state.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\dim_county processing\Lookup with nds_state"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup with nds_state"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[nds_state]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_state]) [refTable]
+where [refTable].[state_code_sk] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_nk" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="state_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\dim_county processing\nds_county.Outputs[OLE DB Source Output].Columns[state_code_sk]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\dim_county processing\Lookup with nds_state.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
+                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\dim_county processing\Lookup with nds_state.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\dim_county processing\Lookup with nds_state.Inputs[Lookup Input].Columns[state_code_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_code_sk"
+                      lineageId="Package\dim_county processing\nds_county.Outputs[OLE DB Source Output].Columns[state_code_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\dim_county processing\Lookup with nds_state.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Copy Column"
+                      length="50"
+                      lineageId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]"
+                      name="state_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">state_name</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\dim_county processing\Lookup with nds_state.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\dim_county processing\Lookup with nds_state.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1892,13 +2236,23 @@ where [refTable].[county_name] = ?</property>
               name="Lookup Match Output"
               startId="Package\dim_county processing\Check exist.Outputs[Lookup Match Output]" />
             <path
+              refId="Package\dim_county processing.Paths[Lookup Match Output1]"
+              endId="Package\dim_county processing\Lookup with dds_state.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\dim_county processing\Lookup with nds_state.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\dim_county processing.Paths[Lookup Match Output2]"
+              endId="Package\dim_county processing\Delete space.Inputs[Derived Column Input]"
+              name="Lookup Match Output"
+              startId="Package\dim_county processing\Lookup with dds_state.Outputs[Lookup Match Output]" />
+            <path
               refId="Package\dim_county processing.Paths[Lookup No Match Output]"
               endId="Package\dim_county processing\Add created_date, updated_date.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
               startId="Package\dim_county processing\Check exist.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\dim_county processing.Paths[OLE DB Source Output]"
-              endId="Package\dim_county processing\Delete space.Inputs[Derived Column Input]"
+              endId="Package\dim_county processing\Lookup with nds_state.Inputs[Lookup Input]"
               name="OLE DB Source Output"
               startId="Package\dim_county processing\nds_county.Outputs[OLE DB Source Output]" />
           </paths>
@@ -5924,14 +6278,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                   name="Derived Column Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\fact_aqi\delete space.Inputs[Derived Column Input].Columns[state_name]"
+                      refId="Package\fact_aqi\delete space.Inputs[Derived Column Input].Columns[county_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
-                      cachedName="state_name"
+                      cachedName="county_name"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      lineageId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]"
+                      lineageId="Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output].Columns[county_name]"
                       truncationRowDisposition="FailComponent"
                       usageType="readWrite">
                       <properties>
@@ -5939,13 +6293,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]})</property>
+                          name="Expression">[TRIM](#{Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output].Columns[county_name]})</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">TRIM(state_name)</property>
+                          name="FriendlyExpression">TRIM(county_name)</property>
                       </properties>
                     </inputColumn>
                   </inputColumns>
@@ -5979,82 +6333,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                       refId="Package\fact_aqi\delete space.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\fact_aqi\delete space.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\fact_aqi\delete space 2"
-              componentClassID="Microsoft.DerivedColumn"
-              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
-              name="delete space 2"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\fact_aqi\delete space 2.Inputs[Derived Column Input]"
-                  description="Input to the Derived Column Transformation"
-                  name="Derived Column Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\fact_aqi\delete space 2.Inputs[Derived Column Input].Columns[county_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="county_name"
-                      errorOrTruncationOperation="Computation"
-                      errorRowDisposition="FailComponent"
-                      lineageId="Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output].Columns[county_name]"
-                      truncationRowDisposition="FailComponent"
-                      usageType="readWrite">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output].Columns[county_name]})</property>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Friendly Expression"
-                          expressionType="Notify"
-                          name="FriendlyExpression">TRIM(county_name)</property>
-                      </properties>
-                    </inputColumn>
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\fact_aqi\delete space 2.Outputs[Derived Column Output]"
-                  description="Default Output of the Derived Column Transformation"
-                  exclusionGroup="1"
-                  name="Derived Column Output"
-                  synchronousInputId="Package\fact_aqi\delete space 2.Inputs[Derived Column Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\fact_aqi\delete space 2.Outputs[Derived Column Error Output]"
-                  description="Error Output of the Derived Column Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Derived Column Error Output"
-                  synchronousInputId="Package\fact_aqi\delete space 2.Inputs[Derived Column Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\fact_aqi\delete space 2.Outputs[Derived Column Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\fact_aqi\delete space 2.Outputs[Derived Column Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\fact_aqi\delete space 2.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\fact_aqi\delete space 2.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -6139,11 +6417,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
               </outputs>
             </component>
             <component
-              refId="Package\fact_aqi\Lookup with dim_county"
+              refId="Package\fact_aqi\Lookup"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Lookup with dim_county"
+              name="Lookup"
               usesDispositions="true"
               version="6">
               <properties>
@@ -6152,14 +6430,334 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_county]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[nds_state]</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_county]) [refTable]
-where [refTable].[county_name] = ?</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_state]) [refTable]
+where [refTable].[state_code_sk] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_nk" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="state_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[state_code_sk]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact_aqi\Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
+                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact_aqi\Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact_aqi\Lookup.Inputs[Lookup Input].Columns[state_code_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_code_sk"
+                      lineageId="Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[state_code_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact_aqi\Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact_aqi\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup.Outputs[Lookup Match Output].Columns[state_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Copy Column"
+                      length="50"
+                      lineageId="Package\fact_aqi\Lookup.Outputs[Lookup Match Output].Columns[state_name]"
+                      name="state_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">state_name</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact_aqi\Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact_aqi\Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact_aqi\Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact_aqi\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact_aqi\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact_aqi\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact_aqi\Lookup 1"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup 1"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_state]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_state]) [refTable]
+where [refTable].[state_name] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_nk" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="state_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact_aqi\Lookup.Outputs[Lookup Match Output].Columns[state_name]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact_aqi\Lookup 1.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[msi.AQI_DDS]"
+                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_DDS]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact_aqi\Lookup 1.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact_aqi\Lookup 1.Inputs[Lookup Input].Columns[state_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="state_name"
+                      lineageId="Package\fact_aqi\Lookup.Outputs[Lookup Match Output].Columns[state_name]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_name</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact_aqi\Lookup 1.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact_aqi\Lookup 1.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup 1.Outputs[Lookup Match Output].Columns[state_sk]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\fact_aqi\Lookup 1.Outputs[Lookup Match Output].Columns[state_sk]"
+                      name="state_sk"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">state_code_sk</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact_aqi\Lookup 1.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact_aqi\Lookup 1.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact_aqi\Lookup 1.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact_aqi\Lookup 1.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact_aqi\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact_aqi\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact_aqi\Lookup dim_category"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup dim_category"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_category]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_category]) [refTable]
+where [refTable].[category_name] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -6190,12 +6788,171 @@ where [refTable].[county_name] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="lng" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="category_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="category_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output].Columns[county_name]};</property>
+                  name="ParameterMap">#{Package\fact_aqi\Lookup with nds_category.Outputs[Lookup Match Output].Columns[category_name]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact_aqi\Lookup dim_category.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[msi.AQI_DDS]"
+                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_DDS]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact_aqi\Lookup dim_category.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact_aqi\Lookup dim_category.Inputs[Lookup Input].Columns[category_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="category_name"
+                      lineageId="Package\fact_aqi\Lookup with nds_category.Outputs[Lookup Match Output].Columns[category_name]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">category_name</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact_aqi\Lookup dim_category.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Match Output].Columns[category_dds_sk]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Match Output].Columns[category_dds_sk]"
+                      name="category_dds_sk"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">category_sk</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact_aqi\Lookup dim_category.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact_aqi\Lookup dim_category.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact_aqi\Lookup with dim_county"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup with dim_county"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_county]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_county]) [refTable]
+where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="lng" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output].Columns[county_name]};#{Package\fact_aqi\Lookup 1.Outputs[Lookup Match Output].Columns[state_sk]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -6230,6 +6987,22 @@ where [refTable].[county_name] = ?</property>
                           dataType="System.String"
                           description="Specifies the column in the reference table that a column joins."
                           name="JoinToReferenceColumn">county_name</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\fact_aqi\Lookup with dim_county.Inputs[Lookup Input].Columns[state_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_sk"
+                      lineageId="Package\fact_aqi\Lookup 1.Outputs[Lookup Match Output].Columns[state_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
                         <property
                           dataType="System.Null"
                           description="Specifies the column in the reference table from which a column is copied."
@@ -6448,165 +7221,6 @@ where [refTable].[date_full] = ?</property>
                       refId="Package\fact_aqi\Lookup with dim_date.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\fact_aqi\Lookup with dim_date.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\fact_aqi\Lookup with dim_state"
-              componentClassID="Microsoft.Lookup"
-              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
-              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Lookup with dim_state"
-              usesDispositions="true"
-              version="6">
-              <properties>
-                <property
-                  dataType="System.String"
-                  description="Specifies the SQL statement that generates the lookup table."
-                  expressionType="Notify"
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_state]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
-                  expressionType="Notify"
-                  name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_state]) [refTable]
-where [refTable].[state_name] = ?</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the type of connection used to access the reference dataset."
-                  name="ConnectionType"
-                  typeConverter="LookupConnectionType">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the cache type of the lookup table."
-                  name="CacheType"
-                  typeConverter="CacheType">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
-                  name="NoMatchBehavior"
-                  typeConverter="LookupNoMatchBehavior">1</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
-                  name="NoMatchCachePercentage">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
-                  name="MaxMemoryUsage">25</property>
-                <property
-                  dataType="System.Int64"
-                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
-                  name="MaxMemoryUsage64">25</property>
-                <property
-                  dataType="System.String"
-                  description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_nk" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="state_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
-                <property
-                  containsID="true"
-                  dataType="System.String"
-                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]};</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
-                  name="TreatDuplicateKeysAsError">false</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\fact_aqi\Lookup with dim_state.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[msi.AQI_DDS]"
-                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_DDS]"
-                  description="Connection manager used to access lookup data."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\fact_aqi\Lookup with dim_state.Inputs[Lookup Input]"
-                  name="Lookup Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\fact_aqi\Lookup with dim_state.Inputs[Lookup Input].Columns[state_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="state_name"
-                      lineageId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table that a column joins."
-                          name="JoinToReferenceColumn">state_name</property>
-                        <property
-                          dataType="System.Null"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn" />
-                      </properties>
-                    </inputColumn>
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Match Output]"
-                  errorOrTruncationOperation="Lookup"
-                  exclusionGroup="1"
-                  name="Lookup Match Output"
-                  synchronousInputId="Package\fact_aqi\Lookup with dim_state.Inputs[Lookup Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Match Output].Columns[state_sk]"
-                      dataType="i4"
-                      errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Match Output].Columns[state_sk]"
-                      name="state_sk"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn">state_code_sk</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup No Match Output]"
-                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
-                  exclusionGroup="1"
-                  name="Lookup No Match Output"
-                  synchronousInputId="Package\fact_aqi\Lookup with dim_state.Inputs[Lookup Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Lookup Error Output"
-                  synchronousInputId="Package\fact_aqi\Lookup with dim_state.Inputs[Lookup Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -6925,165 +7539,6 @@ where [refTable].[county_fips_sk] = ?</property>
                       refId="Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\fact_aqi\Lookup with nds_state"
-              componentClassID="Microsoft.Lookup"
-              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
-              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Lookup with nds_state"
-              usesDispositions="true"
-              version="6">
-              <properties>
-                <property
-                  dataType="System.String"
-                  description="Specifies the SQL statement that generates the lookup table."
-                  expressionType="Notify"
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[nds_state]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
-                  expressionType="Notify"
-                  name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_state]) [refTable]
-where [refTable].[state_code_sk] = ?</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the type of connection used to access the reference dataset."
-                  name="ConnectionType"
-                  typeConverter="LookupConnectionType">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the cache type of the lookup table."
-                  name="CacheType"
-                  typeConverter="CacheType">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
-                  name="NoMatchBehavior"
-                  typeConverter="LookupNoMatchBehavior">1</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
-                  name="NoMatchCachePercentage">0</property>
-                <property
-                  dataType="System.Int32"
-                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
-                  name="MaxMemoryUsage">25</property>
-                <property
-                  dataType="System.Int64"
-                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
-                  name="MaxMemoryUsage64">25</property>
-                <property
-                  dataType="System.String"
-                  description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_nk" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="state_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
-                <property
-                  containsID="true"
-                  dataType="System.String"
-                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[state_code_sk]};</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
-                  name="TreatDuplicateKeysAsError">false</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\fact_aqi\Lookup with nds_state.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
-                  connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
-                  description="Connection manager used to access lookup data."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\fact_aqi\Lookup with nds_state.Inputs[Lookup Input]"
-                  name="Lookup Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\fact_aqi\Lookup with nds_state.Inputs[Lookup Input].Columns[state_code_sk]"
-                      cachedDataType="i4"
-                      cachedName="state_code_sk"
-                      lineageId="Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[state_code_sk]">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table that a column joins."
-                          name="JoinToReferenceColumn">state_code_sk</property>
-                        <property
-                          dataType="System.Null"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn" />
-                      </properties>
-                    </inputColumn>
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output]"
-                  errorOrTruncationOperation="Lookup"
-                  exclusionGroup="1"
-                  name="Lookup Match Output"
-                  synchronousInputId="Package\fact_aqi\Lookup with nds_state.Inputs[Lookup Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Copy Column"
-                      length="50"
-                      lineageId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output].Columns[state_name]"
-                      name="state_name"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          dataType="System.String"
-                          description="Specifies the column in the reference table from which a column is copied."
-                          name="CopyFromReferenceColumn">state_name</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup No Match Output]"
-                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
-                  exclusionGroup="1"
-                  name="Lookup No Match Output"
-                  synchronousInputId="Package\fact_aqi\Lookup with nds_state.Inputs[Lookup Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Lookup Error Output"
-                  synchronousInputId="Package\fact_aqi\Lookup with nds_state.Inputs[Lookup Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -7423,24 +7878,6 @@ where [refTable].[state_code_sk] = ?</property>
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[state_code_sk]"
-                      cachedDataType="i4"
-                      cachedName="state_code_sk"
-                      externalMetadataColumnId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[state_code_sk]"
-                      lineageId="Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[state_code_sk]" />
-                    <inputColumn
-                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[category_sk]"
-                      cachedDataType="i4"
-                      cachedName="category_sk"
-                      externalMetadataColumnId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[category_sk]"
-                      lineageId="Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[category_sk]" />
-                    <inputColumn
-                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[county_fips_sk]"
-                      cachedDataType="i4"
-                      cachedName="county_fips_sk"
-                      externalMetadataColumnId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[county_fips_sk]"
-                      lineageId="Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output].Columns[county_fips_sk]" />
-                    <inputColumn
                       refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[aqi]"
                       cachedDataType="numeric"
                       cachedName="aqi"
@@ -7488,6 +7925,18 @@ where [refTable].[state_code_sk] = ?</property>
                       cachedName="updated_date"
                       externalMetadataColumnId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[updated_date]"
                       lineageId="Package\fact_aqi\Add created_date, updated_date.Outputs[Derived Column Output].Columns[updated_date]" />
+                    <inputColumn
+                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[county_sk]"
+                      cachedDataType="i4"
+                      cachedName="county_sk"
+                      externalMetadataColumnId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[county_fips_sk]"
+                      lineageId="Package\fact_aqi\Lookup with dim_county.Outputs[Lookup Match Output].Columns[county_sk]" />
+                    <inputColumn
+                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[category_dds_sk]"
+                      cachedDataType="i4"
+                      cachedName="category_dds_sk"
+                      externalMetadataColumnId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[category_sk]"
+                      lineageId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Match Output].Columns[category_dds_sk]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -7499,14 +7948,6 @@ where [refTable].[state_code_sk] = ?</property>
                       refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[date_sk]"
                       dataType="i4"
                       name="date_sk" />
-                    <externalMetadataColumn
-                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[state_code_sk]"
-                      dataType="i4"
-                      name="state_code_sk" />
-                    <externalMetadataColumn
-                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[county_fips_sk]"
-                      dataType="i4"
-                      name="county_fips_sk" />
                     <externalMetadataColumn
                       refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[category_sk]"
                       dataType="i4"
@@ -7541,6 +7982,10 @@ where [refTable].[state_code_sk] = ?</property>
                       refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[updated_date]"
                       dataType="dbTimeStamp"
                       name="updated_date" />
+                    <externalMetadataColumn
+                      refId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[county_fips_sk]"
+                      dataType="i4"
+                      name="county_fips_sk" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -7583,57 +8028,57 @@ where [refTable].[state_code_sk] = ?</property>
               startId="Package\fact_aqi\Convert date from date to unicodestring.Outputs[Data Conversion Output]" />
             <path
               refId="Package\fact_aqi.Paths[Derived Column Output]"
-              endId="Package\fact_aqi\Lookup with dim_state.Inputs[Lookup Input]"
-              name="Derived Column Output"
-              startId="Package\fact_aqi\delete space.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Derived Column Output1]"
-              endId="Package\fact_aqi\Lookup with dim_county.Inputs[Lookup Input]"
-              name="Derived Column Output"
-              startId="Package\fact_aqi\delete space 2.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Derived Column Output2]"
-              endId="Package\fact_aqi\Convert date from datetime to date.Inputs[Data Conversion Input]"
-              name="Derived Column Output"
-              startId="Package\fact_aqi\delete space 3.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Derived Column Output3]"
               endId="Package\fact_aqi\OLE DB Destination.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\fact_aqi\Add created_date, updated_date.Outputs[Derived Column Output]" />
             <path
+              refId="Package\fact_aqi.Paths[Derived Column Output1]"
+              endId="Package\fact_aqi\Lookup dim_category.Inputs[Lookup Input]"
+              name="Derived Column Output"
+              startId="Package\fact_aqi\delete space 3.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\fact_aqi.Paths[Derived Column Output2]"
+              endId="Package\fact_aqi\Lookup with dim_county.Inputs[Lookup Input]"
+              name="Derived Column Output"
+              startId="Package\fact_aqi\delete space.Outputs[Derived Column Output]" />
+            <path
               refId="Package\fact_aqi.Paths[Lookup Match Output]"
-              endId="Package\fact_aqi\Lookup with nds_county.Inputs[Lookup Input]"
-              name="Lookup Match Output"
-              startId="Package\fact_aqi\Lookup with nds_state.Outputs[Lookup Match Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Lookup Match Output1]"
-              endId="Package\fact_aqi\Lookup with nds_category.Inputs[Lookup Input]"
-              name="Lookup Match Output"
-              startId="Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Lookup Match Output2]"
-              endId="Package\fact_aqi\delete space.Inputs[Derived Column Input]"
-              name="Lookup Match Output"
-              startId="Package\fact_aqi\Lookup with nds_category.Outputs[Lookup Match Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Lookup Match Output3]"
-              endId="Package\fact_aqi\delete space 2.Inputs[Derived Column Input]"
-              name="Lookup Match Output"
-              startId="Package\fact_aqi\Lookup with dim_state.Outputs[Lookup Match Output]" />
-            <path
-              refId="Package\fact_aqi.Paths[Lookup Match Output4]"
               endId="Package\fact_aqi\delete space 3.Inputs[Derived Column Input]"
               name="Lookup Match Output"
               startId="Package\fact_aqi\Lookup with dim_county.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\fact_aqi.Paths[Lookup Match Output5]"
+              refId="Package\fact_aqi.Paths[Lookup Match Output1]"
+              endId="Package\fact_aqi\Convert date from datetime to date.Inputs[Data Conversion Input]"
+              name="Lookup Match Output"
+              startId="Package\fact_aqi\Lookup dim_category.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact_aqi.Paths[Lookup Match Output2]"
               endId="Package\fact_aqi\Add created_date, updated_date.Inputs[Derived Column Input]"
               name="Lookup Match Output"
               startId="Package\fact_aqi\Lookup with dim_date.Outputs[Lookup Match Output]" />
             <path
+              refId="Package\fact_aqi.Paths[Lookup Match Output3]"
+              endId="Package\fact_aqi\Lookup.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\fact_aqi\Lookup with nds_county.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact_aqi.Paths[Lookup Match Output4]"
+              endId="Package\fact_aqi\Lookup with nds_category.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\fact_aqi\Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact_aqi.Paths[Lookup Match Output5]"
+              endId="Package\fact_aqi\Lookup 1.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\fact_aqi\Lookup with nds_category.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact_aqi.Paths[Lookup Match Output6]"
+              endId="Package\fact_aqi\delete space.Inputs[Derived Column Input]"
+              name="Lookup Match Output"
+              startId="Package\fact_aqi\Lookup 1.Outputs[Lookup Match Output]" />
+            <path
               refId="Package\fact_aqi.Paths[OLE DB Source Output]"
-              endId="Package\fact_aqi\Lookup with nds_state.Inputs[Lookup Input]"
+              endId="Package\fact_aqi\Lookup with nds_county.Inputs[Lookup Input]"
               name="OLE DB Source Output"
               startId="Package\fact_aqi\nds_aqi.Outputs[OLE DB Source Output]" />
             <path
@@ -8014,7 +8459,7 @@ where [refTable].[state_code_sk] = ?</property>
         <NodeLayout
           Size="186.4,41.6"
           Id="Package\dim_county processing"
-          TopLeft="469.2857152847,109.376470523217" />
+          TopLeft="470.000001000506,109.376470523217" />
         <NodeLayout
           Size="175.2,41.6"
           Id="Package\dim_date processing"
@@ -8059,6 +8504,10 @@ where [refTable].[state_code_sk] = ?</property>
           Size="168,41.6"
           Id="Package\Set cet nds_county"
           TopLeft="18.3571428845121,104.658823526731" />
+        <NodeLayout
+          Size="171.2,41.6"
+          Id="Package\Update lset nds_aqi"
+          TopLeft="855.77143033524,273.423529226093" />
         <NodeLayout
           Size="197.6,41.6"
           Id="Package\Update lset nds_category"
@@ -8151,182 +8600,6 @@ where [refTable].[state_code_sk] = ?</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="29.900000457679,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="418.442857637028,50.1882353128859">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="55.8428576583165,0"
-              Start="0,0"
-              End="48.3428576583165,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="48.3428576583165,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="651.885715295344,47.958823771723">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="71.5000004044596,0"
-              Start="0,0"
-              End="64.0000004044596,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="64.0000004044596,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="420.728571910578,128.838235301491">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="48.5571433741223,0"
-              Start="0,0"
-              End="41.0571433741223,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="41.0571433741223,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="655.6857152847,130.98529440889">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="74.1285718573599,0"
-              Start="0,0"
-              End="66.6285718573599,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="66.6285718573599,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 6]"
-          TopLeft="428.900000478966,208.029412059635">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="40.2000003938159,0"
-              Start="0,0"
-              End="32.7000003938159,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="32.7000003938159,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="664.300000872782,208.623529818633">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="65.514286269278,0"
-              Start="0,0"
-              End="58.014286269278,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="58.014286269278,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 8]"
-          TopLeft="379.328571793498,296.491176798027">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="88.557143374123,0"
-              Start="0,0"
-              End="81.057143374123,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="81.057143374123,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 9]"
-          TopLeft="643.085715167621,295.247058839616">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="65.48571491217,0"
-              Start="0,0"
-              End="57.98571491217,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="57.98571491217,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -8437,10 +8710,6 @@ where [refTable].[state_code_sk] = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="171.2,41.6"
-          Id="Package\Update lset nds_aqi"
-          TopLeft="855.77143033524,273.423529226093" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 13]"
           TopLeft="824.571430079791,294.40588215554">
@@ -8463,6 +8732,182 @@ where [refTable].[state_code_sk] = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="418.442857637028,50.1882353128859">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="55.8428576583165,0"
+              Start="0,0"
+              End="48.3428576583165,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="48.3428576583165,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="651.885715295344,47.958823771723">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="71.5000004044596,0"
+              Start="0,0"
+              End="64.0000004044596,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="64.0000004044596,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="420.728571910578,128.838235301491">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="49.2714290899283,0"
+              Start="0,0"
+              End="41.7714290899283,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="41.7714290899283,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="656.400001000506,130.98529440889">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="73.4142861415537,0"
+              Start="0,0"
+              End="65.9142861415537,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="65.9142861415537,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="428.900000478966,208.029412059635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="40.2000003938159,0"
+              Start="0,0"
+              End="32.7000003938159,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="32.7000003938159,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 7]"
+          TopLeft="664.300000872782,208.623529818633">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="65.514286269278,0"
+              Start="0,0"
+              End="58.014286269278,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="58.014286269278,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 8]"
+          TopLeft="379.328571793498,296.491176798027">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="88.557143374123,0"
+              Start="0,0"
+              End="81.057143374123,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="81.057143374123,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 9]"
+          TopLeft="643.085715167621,295.247058839616">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="65.48571491217,0"
+              Start="0,0"
+              End="57.98571491217,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="57.98571491217,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -8472,9 +8917,21 @@ where [refTable].[state_code_sk] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
+          Size="131.2,41.6"
+          Id="Package\dim_category processing\Check exist"
+          TopLeft="335.571421503108,160.764704409097" />
+        <NodeLayout
+          Size="132.8,41.6"
+          Id="Package\dim_category processing\dim_county"
+          TopLeft="333.000001253826,335.823523914267" />
+        <NodeLayout
           Size="138.4,41.6"
           Id="Package\dim_category processing\Delete space"
           TopLeft="330.642857783912,79.9500000960584" />
+        <NodeLayout
+          Size="232.8,41.6"
+          Id="Package\dim_category processing\Add created_date, updated_date"
+          TopLeft="283.285711755254,257.682349935628" />
         <NodeLayout
           Size="141.6,41.6"
           Id="Package\dim_category processing\nds_category"
@@ -8498,41 +8955,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="131.2,41.6"
-          Id="Package\dim_category processing\Check exist"
-          TopLeft="335.571421503108,160.764704409097" />
-        <NodeLayout
-          Size="232.8,41.6"
-          Id="Package\dim_category processing\Add created_date, updated_date"
-          TopLeft="283.285711755254,257.682349935628" />
-        <NodeLayout
-          Size="132.8,41.6"
-          Id="Package\dim_category processing\dim_county"
-          TopLeft="333.000001253826,335.823523914267" />
-        <EdgeLayout
-          Id="Package\dim_category processing.Paths[Derived Column Output]"
-          TopLeft="399.54285650454,299.282349935628">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,36.5411739786396"
-              Start="0,0"
-              End="0,29.0411739786396">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29.0411739786396" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8578,7 +9003,33 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\dim_category processing.Paths[Derived Column Output]"
+          TopLeft="399.54285650454,299.282349935628">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36.5411739786396"
+              Start="0,0"
+              End="0,29.0411739786396">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.0411739786396" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -8598,43 +9049,51 @@ where [refTable].[state_code_sk] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="132,41.6"
-          Id="Package\dim_county processing\nds_county"
-          TopLeft="333.571421447761,10.9999996537671" />
+          Size="168.8,41.6"
+          Id="Package\dim_county processing\dim_county update"
+          TopLeft="147.948979895073,473.995199877751" />
         <NodeLayout
           Size="131.2,41.6"
           Id="Package\dim_county processing\Check exist"
-          TopLeft="335.571421503108,160.764704409097" />
+          TopLeft="350.87754398467,385.201679055378" />
         <NodeLayout
           Size="132.8,41.6"
           Id="Package\dim_county processing\dim_county"
-          TopLeft="800.999994280083,249.823525195767" />
+          TopLeft="816.306116761645,474.260499842048" />
         <NodeLayout
-          Size="168.8,41.6"
-          Id="Package\dim_county processing\dim_county update"
-          TopLeft="132.642857413511,249.55822523147" />
+          Size="184.8,41.6"
+          Id="Package\dim_county processing\Lookup with nds_state"
+          TopLeft="305.500000638621,92.8949579065882" />
         <NodeLayout
           Size="138.4,41.6"
           Id="Package\dim_county processing\Delete space"
-          TopLeft="327.642857828615,89.9499999470468" />
+          TopLeft="343.969388475615,283.798739326022" />
         <NodeLayout
           Size="232.8,41.6"
           Id="Package\dim_county processing\Add created_date, updated_date"
-          TopLeft="504.285708462097,248.682350069738" />
+          TopLeft="519.591830943659,473.119324716019" />
+        <NodeLayout
+          Size="184.8,41.6"
+          Id="Package\dim_county processing\Lookup with dds_state"
+          TopLeft="313.265306789309,182.436974630003" />
+        <NodeLayout
+          Size="132,41.6"
+          Id="Package\dim_county processing\nds_county"
+          TopLeft="332.551013282324,10.9999996537671" />
         <EdgeLayout
           Id="Package\dim_county processing.Paths[OLE DB Source Output]"
-          TopLeft="398.207139638188,52.5999996537671">
+          TopLeft="398.225506960472,52.5999996537671">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,37.3500002932797"
+              EndConnector="0,40.2949582528211"
               Start="0,0"
-              End="0,29.8500002932797">
+              End="0,32.7949582528211">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,29.8500002932797" />
+                    End="0,32.7949582528211" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -8645,7 +9104,7 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\dim_county processing.Paths[Lookup No Match Output]"
-          TopLeft="421.704754836441,202.364704409097">
+          TopLeft="437.010877318003,426.801679055378">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -8680,8 +9139,56 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\dim_county processing.Paths[Lookup Match Output2]"
+          TopLeft="409.417347632462,224.036974630003">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59.7617646960195"
+              Start="0,0"
+              End="0,52.2617646960195">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.2617646960195" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,20.3261948480097,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\dim_county processing.Paths[Lookup Match Output1]"
+          TopLeft="401.782653713965,134.494957906588">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47.9420167234147"
+              Start="0,0"
+              End="0,40.4420167234147">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.4420167234147" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,14.4163208617074,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\dim_county processing.Paths[Lookup Match Output]"
-          TopLeft="380.638088169775,202.364704409097">
+          TopLeft="395.944210651337,426.801679055378">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -8717,18 +9224,18 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\dim_county processing.Paths[Derived Column Output1]"
-          TopLeft="399.007139665861,131.549999947047">
+          TopLeft="414.823466230143,325.398739326022">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,29.2147044620505"
+              EndConnector="0,59.802939729356"
               Start="0,0"
-              End="0,21.7147044620505">
+              End="0,52.302939729356">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,21.7147044620505" />
+                    End="0,52.302939729356" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -8739,7 +9246,7 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\dim_county processing.Paths[Derived Column Output]"
-          TopLeft="737.085708462098,270.052937632753">
+          TopLeft="752.39183094366,494.489912279034">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -8763,20 +9270,12 @@ where [refTable].[state_code_sk] = ?</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\dim_county processing\nds_county">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\dim_county processing\Check exist">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -8786,7 +9285,7 @@ where [refTable].[state_code_sk] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -8803,6 +9302,60 @@ where [refTable].[state_code_sk] = ?</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\dim_county processing\Lookup with nds_state">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[nds_state]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\dim_county processing\Lookup with dds_state">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_state]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\dim_county processing\nds_county">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -8862,7 +9415,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8884,7 +9439,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8930,7 +9487,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8952,7 +9511,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8986,7 +9547,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9008,7 +9571,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -9028,6 +9593,14 @@ where [refTable].[state_code_sk] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
+          Size="174.4,41.6"
+          Id="Package\dim_state processing\OLE DB Command 1"
+          TopLeft="750.499995574355,234.876470509192" />
+        <NodeLayout
+          Size="162.4,41.6"
+          Id="Package\dim_state processing\Insert Destination"
+          TopLeft="302.499995574355,234.876470509192" />
+        <NodeLayout
           Size="164.8,41.6"
           Id="Package\dim_state processing\OLE DB Command"
           TopLeft="525.299995574355,234.876470509192" />
@@ -9036,17 +9609,35 @@ where [refTable].[state_code_sk] = ?</property>
           Id="Package\dim_state processing\nds_state"
           TopLeft="549.985709869193,0.323529360203462" />
         <NodeLayout
+          Size="138.4,41.6"
+          Id="Package\dim_state processing\Delete space"
+          TopLeft="544.285715444356,75.7058822865821" />
+        <NodeLayout
           Size="208,41.6"
           Id="Package\dim_state processing\Slowly Changing Dimension"
           TopLeft="504.414281290161,144.747058734432" />
-        <NodeLayout
-          Size="174.4,41.6"
-          Id="Package\dim_state processing\OLE DB Command 1"
-          TopLeft="750.499995574355,234.876470509192" />
-        <NodeLayout
-          Size="162.4,41.6"
-          Id="Package\dim_state processing\Insert Destination"
-          TopLeft="302.499995574355,234.876470509192" />
+        <EdgeLayout
+          Id="Package\dim_state processing.Paths[OLE DB Source Output]"
+          TopLeft="612.735712656774,41.9235293602035">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.7823529263786"
+              Start="0,0"
+              End="0,26.2823529263786">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.2823529263786" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\dim_state processing.Paths[New Output]"
           TopLeft="558.414281290161,186.347058734431">
@@ -9103,8 +9694,30 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-74.40298828125,14.6856043248802,148.8059765625,11.658203125"
+              BoundingBox="-74.40298828125,14.6856043248801,148.8059765625,11.658203125"
               RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\dim_state processing.Paths[Derived Column Output]"
+          TopLeft="610.949998367259,117.305882286582">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.4411764478494"
+              Start="0,0"
+              End="0,19.9411764478494">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.9411764478494" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9139,61 +9752,21 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="11.1089508920969,21.5860014926396,157.0678125,11.6630859375"
+              BoundingBox="11.108950892097,21.5860014926396,157.0678125,11.6630859375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="138.4,41.6"
-          Id="Package\dim_state processing\Delete space"
-          TopLeft="544.285715444356,75.7058822865821" />
-        <EdgeLayout
-          Id="Package\dim_state processing.Paths[Derived Column Output]"
-          TopLeft="610.949998367259,117.305882286582">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,27.4411764478494"
-              Start="0,0"
-              End="0,19.9411764478494">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,19.9411764478494" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\dim_state processing.Paths[OLE DB Source Output]"
-          TopLeft="612.735712656774,41.9235293602035">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,33.7823529263786"
-              Start="0,0"
-              End="0,26.2823529263786">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,26.2823529263786" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\dim_state processing\nds_state">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\dim_state processing\Slowly Changing Dimension">
     <Properties>
@@ -9256,14 +9829,6 @@ where [refTable].[state_code_sk] = ?</property>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\dim_state processing\nds_state">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\fact_aqi">
     <LayoutInfo>
@@ -9272,77 +9837,69 @@ where [refTable].[state_code_sk] = ?</property>
         <NodeLayout
           Size="153.6,41.6"
           Id="Package\fact_aqi\Date processing"
-          TopLeft="975.714287791326,253.994957849613" />
+          TopLeft="421.714296046569,207.994958535066" />
         <NodeLayout
           Size="201.6,41.6"
           Id="Package\fact_aqi\Lookup with nds_category"
-          TopLeft="930.612246878988,17.4789915813176" />
+          TopLeft="626.612251408941,20.4789915366141" />
         <NodeLayout
-          Size="146.4,41.6"
-          Id="Package\fact_aqi\delete space 3"
-          TopLeft="145.918367657561,255.63025187677" />
-        <NodeLayout
-          Size="192.8,41.6"
-          Id="Package\fact_aqi\Lookup with nds_county"
-          TopLeft="601.02040944268,14.2016806598207" />
-        <NodeLayout
-          Size="182.4,41.6"
-          Id="Package\fact_aqi\Lookup with dim_date"
-          TopLeft="966.130614025652,351.781512377333" />
-        <NodeLayout
-          Size="267.2,41.6"
-          Id="Package\fact_aqi\Convert date from date to unicodestring"
-          TopLeft="646.714286392746,251.700840204565" />
+          Size="179.2,41.6"
+          Id="Package\fact_aqi\Lookup dim_category"
+          TopLeft="415.999993801117,110.599998614192" />
         <NodeLayout
           Size="245.6,41.6"
           Id="Package\fact_aqi\Convert date from datetime to date"
-          TopLeft="336.428572144739,251.289075323736" />
+          TopLeft="60.4285762574595,108.289077454602" />
         <NodeLayout
           Size="146.4,41.6"
-          Id="Package\fact_aqi\delete space 2"
-          TopLeft="435.714286641807,152.941176336529" />
+          Id="Package\fact_aqi\delete space 3"
+          TopLeft="638.918360311289,114.630253977834" />
         <NodeLayout
-          Size="184.8,41.6"
-          Id="Package\fact_aqi\Lookup with nds_state"
-          TopLeft="276.530612833559,19.6638655289824" />
+          Size="192.8,41.6"
+          Id="Package\fact_aqi\Lookup with nds_county"
+          TopLeft="248.530613250791,19.6638655289824" />
         <NodeLayout
-          Size="185.6,41.6"
-          Id="Package\fact_aqi\Lookup with dim_state"
-          TopLeft="720.408164798867,155.126050284194" />
+          Size="193.6,41.6"
+          Id="Package\fact_aqi\Lookup with dim_county"
+          TopLeft="876.408162474286,116.126050865339" />
+        <NodeLayout
+          Size="267.2,41.6"
+          Id="Package\fact_aqi\Convert date from date to unicodestring"
+          TopLeft="52.7142952440356,213.700840770809" />
         <NodeLayout
           Size="137.6,41.6"
           Id="Package\fact_aqi\delete space"
-          TopLeft="968.367349000176,155.126050284194" />
+          TopLeft="1024.36734816571,46.1260519084206" />
         <NodeLayout
           Size="170.4,41.6"
           Id="Package\fact_aqi\OLE DB Destination"
-          TopLeft="324.489796609121,349.109243425531" />
+          TopLeft="981.632643315079,483.34453794092" />
         <NodeLayout
           Size="114.4,41.6"
           Id="Package\fact_aqi\nds_aqi"
           TopLeft="85.7142858967488,21.8487394766471" />
         <NodeLayout
+          Size="182.4,41.6"
+          Id="Package\fact_aqi\Lookup with dim_date"
+          TopLeft="678.130618317186,205.781514552903" />
+        <NodeLayout
           Size="232.8,41.6"
           Id="Package\fact_aqi\Add created_date, updated_date"
-          TopLeft="596.93877678093,351.764705574018" />
-        <NodeLayout
-          Size="193.6,41.6"
-          Id="Package\fact_aqi\Lookup with dim_county"
-          TopLeft="125.510204348811,149.663865415032" />
+          TopLeft="955.081627942339,376.000001728535" />
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Output 0]"
-          TopLeft="1054.92245090849,295.594957849613">
+          TopLeft="575.314296046569,227.688236543984">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,56.1865545277207"
+              EndConnector="102.816322270617,0"
               Start="0,0"
-              End="0,48.6865545277207">
+              End="95.3163222706172,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,48.6865545277207" />
+                    End="95.3163222706172,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9357,14 +9914,14 @@ where [refTable].[state_code_sk] = ?</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="76.4163269368104,0"
+              EndConnector="48.4163273540426,0"
               Start="0,0"
-              End="68.9163269368104,0">
+              End="40.9163273540426,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="68.9163269368104,0" />
+                    End="40.9163273540426,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9374,207 +9931,103 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\fact_aqi.Paths[Lookup Match Output5]"
-          TopLeft="966.130614025652,372.573108975675">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-136.391837244722,0"
-              Start="0,0"
-              End="-128.891837244722,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-128.891837244722,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-112.637305341111,5,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\fact_aqi.Paths[Lookup Match Output4]"
-          TopLeft="220.714286003186,191.263865415032">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,64.3663864617381"
-              Start="0,0"
-              End="0,56.8663864617381">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,56.8663864617381" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,22.6285057308691,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\fact_aqi.Paths[Lookup Match Output3]"
-          TopLeft="720.408164798867,174.833613310362">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-138.293878157059,0"
-              Start="0,0"
-              End="-130.793878157059,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-130.793878157059,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-113.58832579728,5,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\fact_aqi.Paths[Lookup Match Output2]"
-          TopLeft="1034.28979793958,59.0789915813176">
+          TopLeft="769.330618317186,247.381514552903">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,96.0470587028764"
+              EndConnector="302.151009625153,128.618487175632"
               Start="0,0"
-              End="0,88.5470587028764">
+              End="302.151009625153,121.118487175632">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,88.5470587028764" />
+                    End="0,60.3092435878161" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,60.3092435878161"
+                    Point2="0,64.3092435878161"
+                    Point3="4,64.3092435878161" />
+                  <mssgle:LineSegment
+                    End="298.151009625153,64.3092435878161" />
+                  <mssgle:CubicBezierSegment
+                    Point1="298.151009625153,64.3092435878161"
+                    Point2="302.151009625153,64.3092435878161"
+                    Point3="302.151009625153,68.3092435878161" />
+                  <mssgle:LineSegment
+                    End="302.151009625153,121.118487175632" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,38.4688418514382,96.3827734375,11.609375"
+              BoundingBox="94.0154657500765,69.3092435878161,114.120078125,16"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Lookup Match Output1]"
-          TopLeft="793.82040944268,36.6403361205691">
+          TopLeft="415.999993801117,130.244538034397">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="136.791837436308,0"
+              EndConnector="-109.971417543657,0"
               Start="0,0"
-              End="129.291837436308,0">
+              End="-102.471417543657,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="129.291837436308,0" />
+                    End="-102.471417543657,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="16.4545319994041,5,96.3827734375,11.609375"
+              BoundingBox="-108.295747834328,5,114.120078125,16"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Lookup Match Output]"
-          TopLeft="461.330612833559,37.7327730944015">
+          TopLeft="876.408162474286,136.178152421587">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="139.689796609121,0"
+              EndConnector="-91.089802162997,0"
               Start="0,0"
-              End="132.189796609121,0">
+              End="-83.589802162997,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="132.189796609121,0" />
+                    End="-83.589802162997,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="17.9035115858104,5,96.3827734375,11.609375"
+              BoundingBox="-89.9862878002485,5,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\fact_aqi.Paths[Derived Column Output3]"
-          TopLeft="596.93877678093,371.236974499774">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-102.048980171809,0"
-              Start="0,0"
-              End="-94.5489801718087,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-94.5489801718087,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\fact_aqi.Paths[Derived Column Output2]"
-          TopLeft="292.318367657561,274.259663600253">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="44.1102044871784,0"
-              Start="0,0"
-              End="36.6102044871784,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="36.6102044871784,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\fact_aqi.Paths[Derived Column Output1]"
-          TopLeft="435.714286641807,172.102520875781">
+          TopLeft="638.918360311289,133.415126296013">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-116.604082292997,0"
+              EndConnector="-43.7183665101718,0"
               Start="0,0"
-              End="-109.104082292997,0">
+              End="-36.2183665101718,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-109.104082292997,0" />
+                    End="-36.2183665101718,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9585,18 +10038,18 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Derived Column Output]"
-          TopLeft="968.367349000176,175.926050284194">
+          TopLeft="1069.15713562871,417.600001728535">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-62.3591842013089,0"
+              EndConnector="0,65.7445362123853"
               Start="0,0"
-              End="-54.8591842013089,0">
+              End="0,58.2445362123853">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-54.8591842013089,0" />
+                    End="0,58.2445362123853" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9607,18 +10060,18 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Data Conversion Output1]"
-          TopLeft="913.914286392746,273.647899027089">
+          TopLeft="319.914295244036,231.647899652938">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="61.80000139858,0"
+              EndConnector="101.800000802534,0"
               Start="0,0"
-              End="54.30000139858,0">
+              End="94.3000008025337,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="54.30000139858,0" />
+                    End="94.3000008025337,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9629,18 +10082,168 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Data Conversion Output]"
-          TopLeft="582.028572144739,272.29495776415">
+          TopLeft="184.771435750748,149.889077454602">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="64.6857142480064,0"
+              EndConnector="0,63.811763316207"
               Start="0,0"
-              End="57.1857142480064,0">
+              End="0,56.311763316207">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="57.1857142480064,0" />
+                    End="0,56.311763316207" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="112.8,41.6"
+          Id="Package\fact_aqi\Lookup"
+          TopLeft="463.999993085861,14.9999997764826" />
+        <EdgeLayout
+          Id="Package\fact_aqi.Paths[Lookup Match Output3]"
+          TopLeft="441.330613250791,38.1319326527325">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="22.66937983507,0"
+              Start="0,0"
+              End="15.16937983507,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="15.16937983507,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-40.606696801215,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact_aqi.Paths[Lookup Match Output4]"
+          TopLeft="576.799993085861,38.5394956565483">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="49.8122583230797,0"
+              Start="0,0"
+              End="42.3122583230797,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="42.3122583230797,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-27.0352575572101,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="121.6,41.6"
+          Id="Package\fact_aqi\Lookup 1"
+          TopLeft="884.999986812472,25.9999996125698" />
+        <EdgeLayout
+          Id="Package\fact_aqi.Paths[Lookup Match Output5]"
+          TopLeft="828.212251408941,44.039495574592">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="56.7877354035313,0"
+              Start="0,0"
+              End="49.2877354035313,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="49.2877354035313,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-23.5475190169843,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact_aqi.Paths[Lookup Match Output6]"
+          TopLeft="945.799986812472,25.9999996125698">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="147.367361353239,20.1260522958508"
+              Start="0,0"
+              End="147.367361353239,12.6260522958508">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-18.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-18.5"
+                    Point2="0,-22.5"
+                    Point3="4,-22.5" />
+                  <mssgle:LineSegment
+                    End="143.367361353239,-22.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="143.367361353239,-22.5"
+                    Point2="147.367361353239,-22.5"
+                    Point3="147.367361353239,-18.5" />
+                  <mssgle:LineSegment
+                    End="147.367361353239,12.6260522958508" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="25.4922939578693,-17.5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact_aqi.Paths[Derived Column Output2]"
+          TopLeft="1093.16734816571,87.7260519084206">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-119.959185691425,28.3999989569184"
+              Start="0,0"
+              End="-119.959185691425,20.8999989569184">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.1999994784592" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.1999994784592"
+                    Point2="0,14.1999994784592"
+                    Point3="-4,14.1999994784592" />
+                  <mssgle:LineSegment
+                    End="-115.959185691425,14.1999994784592" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-115.959185691425,14.1999994784592"
+                    Point2="-119.959185691425,14.1999994784592"
+                    Point3="-119.959185691425,18.1999994784592" />
+                  <mssgle:LineSegment
+                    End="-119.959185691425,20.8999989569184" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9676,6 +10279,29 @@ where [refTable].[state_code_sk] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\Lookup dim_category">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_category]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\fact_aqi\Lookup with nds_county">
     <Properties>
       <Property>
@@ -9693,6 +10319,50 @@ where [refTable].[state_code_sk] = ?</property>
         <Value
           type="q4:string">0</Value>
       </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\Lookup with dim_county">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_county]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\nds_aqi">
+    <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
@@ -9722,12 +10392,12 @@ where [refTable].[state_code_sk] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup with nds_state">
+    design-time-name="Package\fact_aqi\Lookup">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -9737,7 +10407,7 @@ where [refTable].[state_code_sk] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -9745,12 +10415,12 @@ where [refTable].[state_code_sk] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup with dim_state">
+    design-time-name="Package\fact_aqi\Lookup 1">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -9760,51 +10430,7 @@ where [refTable].[state_code_sk] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\nds_aqi">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup with dim_county">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:string">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[dbo].[dim_county]</Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>

@@ -63,6 +63,8 @@ CREATE TABLE [Stage_uscounties] (
 	[sourceID] int
 )
 
+select * from Stage_AQI_State_2023 where [county Name] = 'Butler'
+
 select count(*) as state_2021 from Stage_AQI_State_2021
 select count(*) as state_2022 from Stage_AQI_State_2022
 select count(*) as state_2023 from Stage_AQI_State_2023
