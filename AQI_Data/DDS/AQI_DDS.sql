@@ -1,4 +1,4 @@
-create database AQI_DDS
+﻿create database AQI_DDS
 go
 use AQI_DDS
 go
@@ -71,10 +71,20 @@ select * from fact_aqi a
 join dim_county b on a.county_fips_sk = b.county_fips_sk 
 join dim_date c on a.date_sk = c.date_sk
 join dim_state d on d.state_code_sk = b.state_code_sk 
-where county_name = 'Butler'and c.year = 2021 and state_name = 'Alabama'
+where county_name = 'Sumter'and c.year = 2023 and state_name = 'Alabama'
+
+select * from fact_aqi a 
+join dim_county b on a.county_fips_sk = b.county_fips_sk 
+join dim_date c on a.date_sk = c.date_sk
+join dim_state d on d.state_code_sk = b.state_code_sk 
+where b.county_fips_sk = 767 and c.date_sk = 292 
+and d.state_code_sk = 2
+
 
 select* from dim_county where state_code_sk = 1
 select * from dim_date
+
+select * from fact_aqi
 
 SELECT year, quarter, month, COUNT(*)
 FROM dim_date
@@ -82,3 +92,121 @@ GROUP BY year, quarter, month
 HAVING COUNT(*) > 1;
 
 TRUNCATE TABLE fact_aqi
+
+SELECT 
+    s.state_name AS State,
+    MIN(f.aqi) AS Min_AQI,
+    MAX(f.aqi) AS Max_AQI
+FROM 
+    fact_aqi f
+JOIN 
+    dim_county c ON f.county_fips_sk = c.county_fips_sk
+JOIN 
+    dim_state s ON c.state_code_sk = s.state_code_sk
+GROUP BY 
+    s.state_name
+ORDER BY 
+    s.state_name;
+
+SELECT 
+    s.state_name AS State,
+    SUM(f.aqi) AS Total_AQI
+FROM 
+    fact_aqi f
+JOIN 
+    dim_county c ON f.county_fips_sk = c.county_fips_sk
+JOIN 
+    dim_state s ON c.state_code_sk = s.state_code_sk
+GROUP BY 
+    s.state_name
+ORDER BY 
+    s.state_name;
+
+-- Tìm giá trị min và max của AQI cho từng bang (State) trong mỗi quý (Quarter) của từng năm
+SELECT 
+    s.state_name AS State,
+    d.year AS Year,
+    d.quarter AS Quarter,
+    MAX(f.aqi) AS Max_AQI,
+    MIN(f.aqi) AS Min_AQI
+FROM 
+    fact_aqi f
+INNER JOIN 
+    dim_date d ON f.date_sk = d.date_sk
+INNER JOIN 
+    dim_county c ON f.county_fips_sk = c.county_fips_sk
+INNER JOIN 
+    dim_state s ON c.state_code_sk = s.state_code_sk
+GROUP BY 
+    s.state_name, d.year, d.quarter
+ORDER BY 
+    s.state_name, d.year, d.quarter;
+
+
+SELECT 
+    s.state_name AS State,
+    d.year AS Year,
+    d.quarter AS Quarter,
+    SUM(f.aqi) AS Sum_AQI
+FROM 
+    fact_aqi f
+INNER JOIN 
+    dim_date d ON f.date_sk = d.date_sk
+INNER JOIN 
+    dim_county c ON f.county_fips_sk = c.county_fips_sk
+INNER JOIN 
+    dim_state s ON c.state_code_sk = s.state_code_sk
+GROUP BY 
+    s.state_name, d.year, d.quarter
+ORDER BY 
+    s.state_name, d.year, d.quarter;
+
+
+SELECT 
+    ds.state_name AS State,
+    dc.county_name AS County,
+    COUNT(DISTINCT dd.date_full) AS Number_of_Unhealthy_Days,
+    AVG(fa.aqi) AS Average_AQI
+FROM fact_aqi fa
+JOIN dim_date dd ON fa.date_sk = dd.date_sk
+JOIN dim_county dc ON fa.county_fips_sk = dc.county_fips_sk
+JOIN dim_state ds ON dc.state_code_sk = ds.state_code_sk
+JOIN dim_category dcat ON fa.category_sk = dcat.category_sk
+WHERE dcat.category_name IN ('Very Unhealthy', 'Hazardous') -- Filter for the desired categories
+GROUP BY ds.state_name, dc.county_name
+ORDER BY ds.state_name, dc.county_name;
+
+SELECT 
+    dc.county_name AS County_Name,
+    ds.state_name AS State_Name,
+    dcat.category_name AS Category_Name
+FROM fact_aqi fa
+JOIN dim_county dc ON fa.county_fips_sk = dc.county_fips_sk
+JOIN dim_state ds ON dc.state_code_sk = ds.state_code_sk
+JOIN dim_category dcat ON fa.category_sk = dcat.category_sk
+WHERE ds.state_name = 'Idaho'
+  AND dc.county_name = 'Ada';
+
+SELECT 
+    fa.*,
+    ds.state_name AS State_Name,
+    dc.county_name AS County_Name,
+    dc.county_name_full AS County_Name_Full,
+    dc.county_code AS County_Code,
+    dcat.category_name AS Category_Name,
+    dd.date_full AS Date_Full,
+    dd.year AS Year,
+    dd.month AS Month,
+    dd.day AS Day
+FROM fact_aqi fa
+JOIN dim_date dd ON fa.date_sk = dd.date_sk
+JOIN dim_county dc ON fa.county_fips_sk = dc.county_fips_sk
+JOIN dim_state ds ON dc.state_code_sk = ds.state_code_sk
+JOIN dim_category dcat ON fa.category_sk = dcat.category_sk
+WHERE ds.state_name = 'Idaho'
+  AND dc.county_name = 'Ada'
+  AND dcat.category_name = 'Unhealthy';
+
+
+
+
