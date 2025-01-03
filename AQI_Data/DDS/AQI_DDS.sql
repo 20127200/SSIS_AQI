@@ -208,5 +208,23 @@ WHERE ds.state_name = 'Idaho'
   AND dcat.category_name = 'Unhealthy';
 
 
+SELECT 
+    dd.date_full AS date,
+    fa.aqi AS AQI,
+    dc.county_name AS county,
+    ds.state_name AS state
+FROM 
+    fact_aqi fa
+JOIN 
+    dim_date dd ON fa.date_sk = dd.date_sk
+JOIN 
+    dim_county dc ON fa.county_fips_sk = dc.county_fips_sk
+JOIN 
+    dim_state ds ON dc.state_code_sk = ds.state_code_sk
+WHERE 
+    dd.year >= 2021 -- Lọc dữ liệu từ năm 2021 trở đi
+ORDER BY 
+    dd.date_full;
+
 
 

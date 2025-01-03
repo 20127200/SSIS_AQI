@@ -1,0 +1,331 @@
+﻿-- Question 1
+WITH 
+    MEMBER [Measures].[Max AQI] AS
+        MAX(
+            EXISTING [Dim Date].[Day].[Day].MEMBERS,
+            [Measures].[Aqi]
+        )
+    MEMBER [Measures].[Min AQI] AS
+        MIN(
+            EXISTING [Dim Date].[Day].[Day].MEMBERS,
+            [Measures].[Aqi]
+        )
+SELECT 
+    {
+        [Measures].[Max AQI],
+        [Measures].[Min AQI]
+    } ON COLUMNS,
+    NON EMPTY 
+    (
+        [Dim County].[State Name].[State Name] *
+        [Dim Date].[Year].[Year] *
+        [Dim Date].[Quarter].[Quarter]
+    ) ON ROWS
+FROM [AQI DDS]
+
+-- Question 2
+WITH 
+    -- Tính giá trị trung bình AQI
+    MEMBER [Measures].[Average AQI] AS
+        AVG(
+            EXISTING [Dim Date].[Day].[Day].MEMBERS,
+            [Measures].[Aqi]
+        )
+
+    -- Tính độ lệch chuẩn AQI
+    MEMBER [Measures].[Standard Deviation AQI] AS
+        STDEV(
+            EXISTING [Dim Date].[Day].[Day].MEMBERS,
+            [Measures].[Aqi]
+        )
+
+SELECT 
+    {
+        [Measures].[Average AQI],
+        [Measures].[Standard Deviation AQI]
+    } ON COLUMNS,
+    
+    FILTER(
+        (
+            [Dim County].[State Name].[State Name].Members,
+            [Dim Date].[Year].[Year].Members,
+            [Dim Date].[Quarter].[Quarter].Members
+        ),
+        NOT IsEmpty([Measures].[Average AQI])
+        AND NOT IsEmpty([Measures].[Standard Deviation AQI])
+    ) ON ROWS
+
+FROM [AQI DDS]
+
+-- Question 3
+WITH 
+MEMBER [Measures].[Unhealthy Days Count] AS
+    SUM(
+        FILTER(
+            [Dim Category].[Category Name].MEMBERS,
+            [Dim Category].[Category Name].CURRENTMEMBER.NAME = "Very Unhealthy"
+            OR [Dim Category].[Category Name].CURRENTMEMBER.NAME = "Hazardous"
+        ),
+        [Measures].[Fact Aqi Count]
+    )
+
+MEMBER [Measures].[Average AQI] AS
+    AVG(
+        FILTER(
+            [Dim Category].[Category Name].MEMBERS,
+            [Dim Category].[Category Name].CURRENTMEMBER.NAME = "Very Unhealthy"
+            OR [Dim Category].[Category Name].CURRENTMEMBER.NAME = "Hazardous"
+        ),
+        [Measures].[Aqi]
+    )
+
+SELECT 
+    {
+        [Measures].[Unhealthy Days Count], 
+        [Measures].[Average AQI]
+    } ON COLUMNS,
+    NONEMPTY(
+        CROSSJOIN(
+            [Dim County].[State Name].[State Name].MEMBERS, 
+            [Dim County].[County Name].[County Name].MEMBERS
+        ),
+        {[Measures].[Unhealthy Days Count], [Measures].[Average AQI]}
+    ) ON ROWS
+FROM [AQI DDS]
+WHERE 
+    ([Dim Date].[Year].MEMBERS);
+
+
+-- Question 4
+WITH 
+MEMBER [Measures].[Days Count] AS
+    COUNT(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS,
+            [Measures].[Fact Aqi Count]
+        )
+    )
+
+SELECT 
+    {
+        [Measures].[Days Count]
+    } ON COLUMNS,
+    NONEMPTY(
+        FILTER(
+            CROSSJOIN(
+                [Dim County].[State Name].[State Name].MEMBERS,
+                [Dim County].[County Name].[County Name].MEMBERS,
+                [Dim Category].[Category Name].[Category Name].MEMBERS
+            ),
+            [Dim County].[State Name].CURRENTMEMBER.NAME = "Hawaii"
+            OR [Dim County].[State Name].CURRENTMEMBER.NAME = "Alaska"
+            OR [Dim County].[State Name].CURRENTMEMBER.NAME = "Illinois"
+            OR [Dim County].[State Name].CURRENTMEMBER.NAME = "Delaware"
+        ),
+        [Measures].[Fact Aqi Count]
+    ) ON ROWS
+FROM [AQI DDS];
+
+-- question 5
+WITH 
+-- Tính trung bình AQI
+MEMBER [Measures].[Average AQI] AS
+    AVG(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS, 
+            [Measures].[Aqi]
+        ), 
+        [Measures].[Aqi]
+    )
+
+SELECT 
+-- Lấy tổ hợp Year và Quarter trên trục ROWS
+    NONEMPTY(
+        CROSSJOIN(
+            [Dim County].[State Name].[State Name].MEMBERS, -- State Name
+            [Dim Date].[Year].[Year].MEMBERS,               -- Year
+            [Dim Date].[Quarter].[Quarter].MEMBERS          -- Quarter
+        )
+    ) ON ROWS,
+
+-- Lấy giá trị trung bình AQI trên COLUMNS
+    {[Measures].[Average AQI]} ON COLUMNS
+
+FROM [AQI DDS];
+
+-- question 6
+WITH 
+-- Tính trung bình AQI
+MEMBER [Measures].[Average AQI] AS
+    AVG(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS, 
+            [Measures].[Aqi]
+        ), 
+        [Measures].[Aqi]
+    )
+
+SELECT 
+-- Tổ hợp State, Year và Quarter trên ROWS
+    NONEMPTY(
+        CROSSJOIN(
+            {[Dim County].[State Name].[Hawaii],
+             [Dim County].[State Name].[Alaska],
+             [Dim County].[State Name].[Illinois],
+             [Dim County].[State Name].[California]}, -- Chỉ chọn các bang cần
+            [Dim Date].[Year].[Year].MEMBERS,
+            [Dim Date].[Quarter].[Quarter].MEMBERS
+        )
+    ) ON ROWS,
+
+-- Hiển thị Average AQI trên COLUMNS
+    {[Measures].[Average AQI]} ON COLUMNS
+
+FROM [AQI DDS];
+
+-- question 8 
+WITH 
+-- Tính trung bình AQI
+MEMBER [Measures].[Average AQI] AS
+    AVG(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS, 
+            [Measures].[Aqi]
+        ), 
+        [Measures].[Aqi]
+    )
+
+SELECT 
+-- Lấy tổ hợp State Name, Year và Month trên trục ROWS
+    NONEMPTY(
+        CROSSJOIN(
+            [Dim County].[State Name].[State Name].MEMBERS, -- State Name
+            [Dim Date].[Year].[Year].MEMBERS,               -- Year
+            [Dim Date].[Month].[Month].MEMBERS              -- Month
+        )
+    ) ON ROWS,
+
+-- Lấy giá trị trung bình AQI trên COLUMNS
+    {[Measures].[Average AQI]} ON COLUMNS
+
+FROM [AQI DDS];
+
+-- Question 9
+WITH 
+MEMBER [Measures].[Mean AQI] AS
+    AVG(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS,
+            [Measures].[Aqi]
+        ),
+        [Measures].[Aqi]
+    )
+
+MEMBER [Measures].[Standard Deviation AQI] AS
+    STDDEV(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS,
+            [Measures].[Aqi]
+        ),
+        [Measures].[Aqi]
+    )
+
+MEMBER [Measures].[Min AQI] AS
+    MIN(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS,
+            [Measures].[Aqi]
+        ),
+        [Measures].[Aqi]
+    )
+
+MEMBER [Measures].[Max AQI] AS
+    MAX(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS,
+            [Measures].[Aqi]
+        ),
+        [Measures].[Aqi]
+    )
+
+SELECT 
+    {
+        [Measures].[Mean AQI],
+        [Measures].[Standard Deviation AQI],
+        [Measures].[Min AQI],
+        [Measures].[Max AQI]
+    } ON COLUMNS,
+    NONEMPTY(
+        CROSSJOIN(
+            [Dim Date].[Year].[Year].MEMBERS, -- Hiển thị Năm
+            [Dim Date].[Quarter].[Quarter].MEMBERS, -- Hiển thị Quý
+            [Dim County].[State Name].[State Name].MEMBERS,
+            [Dim County].[County Name].[County Name].MEMBERS
+        )
+    ) ON ROWS
+FROM [AQI DDS];
+
+-- Nháp question 11
+WITH 
+MEMBER [Measures].[Days Count] AS
+    COUNT(
+        NONEMPTY(
+            [Dim Date].[Day].MEMBERS,
+            [Measures].[Fact Aqi Count]
+        )
+    )
+
+SELECT 
+    NONEMPTY(
+        ORDER(
+            CROSSJOIN(
+                [Dim Date].[Year].[Year].MEMBERS, -- Hiển thị Năm
+                [Dim Date].[Month].[Month].MEMBERS -- Hiển thị Tháng
+            ),
+            [Dim Date].[Year].CURRENTMEMBER.UNIQUENAME + [Dim Date].[Month].CURRENTMEMBER.UNIQUENAME, BASC -- Sắp xếp Năm, Tháng tăng dần
+        )
+    ) ON COLUMNS,
+    NONEMPTY(
+        CROSSJOIN(
+            [Dim County].[State Name].[State Name].MEMBERS, -- Hiển thị State
+            [Dim Category].[Category Name].[Category Name].MEMBERS -- Hiển thị Category
+        )
+    ) ON ROWS
+FROM [AQI DDS]
+WHERE [Measures].[Fact Aqi Count];
+
+
+
+
+
+
+
+
+-- Question 11
+WITH 
+MEMBER [Measures].[Days Count] AS
+    SUM(
+        [Dim County].[County Name].[County Name].MEMBERS, -- Lấy tất cả các County
+        COUNT(
+            NONEMPTY(
+                [Dim Date].[Day].MEMBERS,
+                ([Measures].[Fact Aqi Count], 
+                 [Dim County].[County Name].CURRENTMEMBER, 
+                 [Dim Category].[Category Name].CURRENTMEMBER, 
+                 [Dim Date].[Year].CURRENTMEMBER, 
+                 [Dim Date].[Month].CURRENTMEMBER)
+            )
+        )
+    )
+
+SELECT 
+    NONEMPTY(
+        CROSSJOIN(
+            [Dim County].[State Name].[State Name].MEMBERS, -- Hiển thị State
+            [Dim Category].[Category Name].[Category Name].MEMBERS, -- Hiển thị Category
+            [Dim Date].[Year].[Year].MEMBERS, -- Hiển thị Year
+            [Dim Date].[Month].[Month].MEMBERS -- Hiển thị Month
+        )
+    ) ON ROWS,
+    [Measures].[Days Count] ON COLUMNS
+FROM [AQI DDS];

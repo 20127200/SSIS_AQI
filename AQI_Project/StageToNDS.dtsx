@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="186"
-  DTS:VersionGUID="{3378911D-B9E6-496C-8DAE-AB2EFAEF7753}">
+  DTS:VersionBuild="208"
+  DTS:VersionGUID="{EE8870E0-8034-4D95-A8EA-BAA5A99CB9B4}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -2951,11 +2951,11 @@ where [refTable].[source_id] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists"
+              refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Check if county_name exists"
+              name="Check if county_name and state_code_sk exists"
               usesDispositions="true"
               version="6">
               <properties>
@@ -2971,7 +2971,7 @@ where [refTable].[source_id] = ?</property>
                   expressionType="Notify"
                   name="SqlCommandParam"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_county]) [refTable]
-where [refTable].[county_name] = ?</property>
+where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -3007,7 +3007,7 @@ where [refTable].[county_name] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2021 to nds_county\Stage_AQI_State_2021.Outputs[OLE DB Source Output].Columns[county Name]};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2021 to nds_county\Stage_AQI_State_2021.Outputs[OLE DB Source Output].Columns[county Name]};#{Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3019,7 +3019,7 @@ where [refTable].[county_name] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Connections[OleDbConnection]"
+                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
                   connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
                   description="Connection manager used to access lookup data."
@@ -3027,11 +3027,11 @@ where [refTable].[county_name] = ?</property>
               </connections>
               <inputs>
                 <input
-                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Inputs[Lookup Input]"
+                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Inputs[Lookup Input].Columns[county Name]"
+                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input].Columns[county Name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
@@ -3048,44 +3048,60 @@ where [refTable].[county_name] = ?</property>
                           name="CopyFromReferenceColumn" />
                       </properties>
                     </inputColumn>
+                    <inputColumn
+                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input].Columns[state_code_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_code_sk"
+                      lineageId="Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Match Output]"
+                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup No Match Output]"
+                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Error Output]"
+                  refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -3150,7 +3166,7 @@ where [refTable].[source_id] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2021 to nds_county\300:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2021 to nds_county\333:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3445,6 +3461,31 @@ where [refTable].[state_name] = ?</property>
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
                           name="FriendlyExpression">TRIM([county Name])</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Stage_state_AQI_2021 to nds_county\Delete Space.Inputs[Derived Column Input].Columns[State Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="State Name"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Stage_state_AQI_2021 to nds_county\Stage_AQI_State_2021.Outputs[OLE DB Source Output].Columns[State Name]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[TRIM](#{Package\Stage_state_AQI_2021 to nds_county\Stage_AQI_State_2021.Outputs[OLE DB Source Output].Columns[State Name]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">TRIM([State Name])</property>
                       </properties>
                     </inputColumn>
                   </inputColumns>
@@ -4023,17 +4064,17 @@ where [refTable].[state_name] = ?</property>
               refId="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output1]"
               endId="Package\Stage_state_AQI_2021 to nds_county\Update State Code.Inputs[OLE DB Command Input]"
               name="Lookup Match Output"
-              startId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup Match Output]" />
+              startId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output2]"
-              endId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Inputs[Lookup Input]"
+              endId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]"
               name="Lookup Match Output"
               startId="Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup No Match Output]"
               endId="Package\Stage_state_AQI_2021 to nds_county\Check source_sk foreign key.Inputs[Lookup Input]"
               name="Lookup No Match Output"
-              startId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists.Outputs[Lookup No Match Output]" />
+              startId="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2021 to nds_county.Paths[OLE DB Source Output]"
               endId="Package\Stage_state_AQI_2021 to nds_county\Delete Space.Inputs[Derived Column Input]"
@@ -6074,10 +6115,15 @@ where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
                   expressionType="Notify"
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select b.state_name,c.county_name, a.date
+
 from nds_aqi a 
-join nds_state b on
+
+join nds_state b 
+on 
 a.state_code_sk = b.state_code_sk 
-join nds_county c on
+
+join nds_county c 
+on 
 a.county_fips_sk = c.county_fips_sk</property>
                 <property
                   dataType="System.String"
@@ -6085,10 +6131,15 @@ a.county_fips_sk = c.county_fips_sk</property>
                   expressionType="Notify"
                   name="SqlCommandParam"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select b.state_name,c.county_name, a.date
+
 from nds_aqi a 
-join nds_state b on
+
+join nds_state b 
+on 
 a.state_code_sk = b.state_code_sk 
-join nds_county c on
+
+join nds_county c 
+on 
 a.county_fips_sk = c.county_fips_sk) [refTable]
 where [refTable].[date] = ? and [refTable].[state_name] = ? and [refTable].[county_name] = ?</property>
                 <property
@@ -6126,7 +6177,7 @@ where [refTable].[date] = ? and [refTable].[state_name] = ? and [refTable].[coun
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_aqi\302:invalid};#{Package\Stage_state_AQI_2022 to nds_aqi\Check county_code_sk foreign key.Inputs[Lookup Input].Columns[state_code_sk]};#{Package\Stage_state_AQI_2022 to nds_aqi\304:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_aqi\Stage_AQI_state_2022.Outputs[OLE DB Source Output].Columns[Date]};#{Package\Stage_state_AQI_2022 to nds_aqi\Stage_AQI_state_2022.Outputs[OLE DB Source Output].Columns[State Name]};#{Package\Stage_state_AQI_2022 to nds_aqi\Stage_AQI_state_2022.Outputs[OLE DB Source Output].Columns[county Name]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -6303,7 +6354,7 @@ where [refTable].[source_id] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_aqi\305:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_aqi\334:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8524,11 +8575,11 @@ where [refTable].[source_id] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists"
+              refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Check if nds_state exists"
+              name="Check if county_name and state_code_sk exists"
               usesDispositions="true"
               version="6">
               <properties>
@@ -8544,7 +8595,7 @@ where [refTable].[source_id] = ?</property>
                   expressionType="Notify"
                   name="SqlCommandParam"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_county]) [refTable]
-where [refTable].[county_name] = ?</property>
+where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -8575,12 +8626,12 @@ where [refTable].[county_name] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="ing" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="population" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_id" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="lng" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="population" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_county\Stage_AQI_State_2022.Outputs[OLE DB Source Output].Columns[county Name]};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_county\Stage_AQI_State_2022.Outputs[OLE DB Source Output].Columns[county Name]};#{Package\Stage_state_AQI_2022 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8592,7 +8643,7 @@ where [refTable].[county_name] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Connections[OleDbConnection]"
+                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
                   connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
                   description="Connection manager used to access lookup data."
@@ -8600,11 +8651,11 @@ where [refTable].[county_name] = ?</property>
               </connections>
               <inputs>
                 <input
-                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Inputs[Lookup Input]"
+                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Inputs[Lookup Input].Columns[county Name]"
+                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input].Columns[county Name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
@@ -8621,44 +8672,60 @@ where [refTable].[county_name] = ?</property>
                           name="CopyFromReferenceColumn" />
                       </properties>
                     </inputColumn>
+                    <inputColumn
+                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input].Columns[state_code_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_code_sk"
+                      lineageId="Package\Stage_state_AQI_2022 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Match Output]"
+                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup No Match Output]"
+                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output]"
+                  refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -8723,7 +8790,7 @@ where [refTable].[source_id] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_county\306:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_county\335:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8880,7 +8947,7 @@ where [refTable].[county_name] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_county\307:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2022 to nds_county\336:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -9591,7 +9658,7 @@ where [refTable].[county_name] = ?</property>
               refId="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output]"
               endId="Package\Stage_state_AQI_2022 to nds_county\Update State Code.Inputs[OLE DB Command Input]"
               name="Lookup Match Output"
-              startId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup Match Output]" />
+              startId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output1]"
               endId="Package\Stage_state_AQI_2022 to nds_county\Add Created, Updated Date.Inputs[Derived Column Input]"
@@ -9599,14 +9666,14 @@ where [refTable].[county_name] = ?</property>
               startId="Package\Stage_state_AQI_2022 to nds_county\Check source_sk foreign key.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output2]"
-              endId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Inputs[Lookup Input]"
+              endId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]"
               name="Lookup Match Output"
               startId="Package\Stage_state_AQI_2022 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup No Match Output]"
               endId="Package\Stage_state_AQI_2022 to nds_county\Check source_sk foreign key.Inputs[Lookup Input]"
               name="Lookup No Match Output"
-              startId="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists.Outputs[Lookup No Match Output]" />
+              startId="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2022 to nds_county.Paths[OLE DB Source Output]"
               endId="Package\Stage_state_AQI_2022 to nds_county\Delete Space.Inputs[Derived Column Input]"
@@ -11699,7 +11766,7 @@ where [refTable].[date] = ? and [refTable].[state_name] = ? and [refTable].[coun
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2023 to nds_aqi\309:invalid};#{Package\Stage_state_AQI_2023 to nds_aqi\310:invalid};#{Package\Stage_state_AQI_2023 to nds_aqi\311:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2023 to nds_aqi\337:invalid};#{Package\Stage_state_AQI_2023 to nds_aqi\338:invalid};#{Package\Stage_state_AQI_2023 to nds_aqi\339:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -14097,11 +14164,11 @@ where [refTable].[source_id] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists"
+              refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Check if nds_state exists"
+              name="Check if county_name and state_code_sk exists"
               usesDispositions="true"
               version="6">
               <properties>
@@ -14117,7 +14184,7 @@ where [refTable].[source_id] = ?</property>
                   expressionType="Notify"
                   name="SqlCommandParam"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_county]) [refTable]
-where [refTable].[county_name] = ?</property>
+where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -14148,12 +14215,12 @@ where [refTable].[county_name] = ?</property>
                 <property
                   dataType="System.String"
                   description="Indicates whether to reference metadata in an XML format."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="ing" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="population" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_id" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="county_fips_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="state_code_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="source_sk" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="county_fips_nk" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_full" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_name_ascii" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="county_code" dataType="DT_NUMERIC" length="0" precision="20" scale="0" codePage="0"/&gt;&lt;referenceColumn name="lat" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="lng" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="population" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="created_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="updated_date" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2023 to nds_county\Stage_AQI_State_2023.Outputs[OLE DB Source Output].Columns[county Name]};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2023 to nds_county\Stage_AQI_State_2023.Outputs[OLE DB Source Output].Columns[county Name]};#{Package\Stage_state_AQI_2023 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -14165,7 +14232,7 @@ where [refTable].[county_name] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Connections[OleDbConnection]"
+                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
                   connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
                   description="Connection manager used to access lookup data."
@@ -14173,11 +14240,11 @@ where [refTable].[county_name] = ?</property>
               </connections>
               <inputs>
                 <input
-                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Inputs[Lookup Input]"
+                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Inputs[Lookup Input].Columns[county Name]"
+                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input].Columns[county Name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
@@ -14194,44 +14261,60 @@ where [refTable].[county_name] = ?</property>
                           name="CopyFromReferenceColumn" />
                       </properties>
                     </inputColumn>
+                    <inputColumn
+                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input].Columns[state_code_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_code_sk"
+                      lineageId="Package\Stage_state_AQI_2023 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Match Output]"
+                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup No Match Output]"
+                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output]"
+                  refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -14296,7 +14379,7 @@ where [refTable].[source_id] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_AQI_2023 to nds_county\312:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_AQI_2023 to nds_county\340:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -15164,7 +15247,7 @@ where [refTable].[state_name] = ?</property>
               refId="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup Match Output]"
               endId="Package\Stage_state_AQI_2023 to nds_county\Update State Code.Inputs[OLE DB Command Input]"
               name="Lookup Match Output"
-              startId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup Match Output]" />
+              startId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup Match Output1]"
               endId="Package\Stage_state_AQI_2023 to nds_county\Add Created, Updated Date.Inputs[Derived Column Input]"
@@ -15172,14 +15255,14 @@ where [refTable].[state_name] = ?</property>
               startId="Package\Stage_state_AQI_2023 to nds_county\Check source_sk foreign key.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup Match Output2]"
-              endId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Inputs[Lookup Input]"
+              endId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Inputs[Lookup Input]"
               name="Lookup Match Output"
               startId="Package\Stage_state_AQI_2023 to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup No Match Output]"
               endId="Package\Stage_state_AQI_2023 to nds_county\Check source_sk foreign key.Inputs[Lookup Input]"
               name="Lookup No Match Output"
-              startId="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists.Outputs[Lookup No Match Output]" />
+              startId="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\Stage_state_AQI_2023 to nds_county.Paths[OLE DB Source Output]"
               endId="Package\Stage_state_AQI_2023 to nds_county\Delete Space.Inputs[Derived Column Input]"
@@ -16112,7 +16195,7 @@ where [refTable].[source_id] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_state_aqi_2023 to nds_state\313:invalid};</property>
+                  name="ParameterMap">#{Package\Stage_state_aqi_2023 to nds_state\341:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -16892,7 +16975,7 @@ where [refTable].[source_id] = ?</property>
                   expressionType="Notify"
                   name="SqlCommandParam"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[nds_county]) [refTable]
-where [refTable].[county_name] = ?</property>
+where [refTable].[county_name] = ? and [refTable].[state_code_sk] = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the type of connection used to access the reference dataset."
@@ -16928,7 +17011,7 @@ where [refTable].[county_name] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[county]};</property>
+                  name="ParameterMap">#{Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[county]};#{Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -16963,6 +17046,22 @@ where [refTable].[county_name] = ?</property>
                           dataType="System.String"
                           description="Specifies the column in the reference table that a column joins."
                           name="JoinToReferenceColumn">county_name</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Stage_uscounties to nds_county\Check if nds_county exists.Inputs[Lookup Input].Columns[state_code_sk]"
+                      cachedDataType="i4"
+                      cachedName="state_code_sk"
+                      lineageId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">state_code_sk</property>
                         <property
                           dataType="System.Null"
                           description="Specifies the column in the reference table from which a column is copied."
@@ -17172,11 +17271,163 @@ where [refTable].[source_id] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key"
+              refId="Package\Stage_uscounties to nds_county\Delete Space 1"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Delete Space 1"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Stage_uscounties to nds_county\Delete Space 1.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Stage_uscounties to nds_county\Delete Space 1.Inputs[Derived Column Input].Columns[state_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="state_name"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[state_name]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[TRIM](#{Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[state_name]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">TRIM(state_name)</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Delete Space 1.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Delete Space 1.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Stage_uscounties to nds_county\Delete Space 2"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Delete Space 2"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Stage_uscounties to nds_county\Delete Space 2.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Stage_uscounties to nds_county\Delete Space 2.Inputs[Derived Column Input].Columns[county]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="county"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[county]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[TRIM](#{Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[county]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">TRIM(county)</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Delete Space 2.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Delete Space 2.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
               description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-              name="Check state_code_sk foreign key"
+              name="Get state_code_sk foreign key"
               usesDispositions="true"
               version="6">
               <properties>
@@ -17240,7 +17491,7 @@ where [refTable].[state_name] = ?</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Connections[OleDbConnection]"
+                  refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[msi.AQI_NDS]"
                   connectionManagerRefId="Package.ConnectionManagers[msi.AQI_NDS]"
                   description="Connection manager used to access lookup data."
@@ -17248,11 +17499,11 @@ where [refTable].[state_name] = ?</property>
               </connections>
               <inputs>
                 <input
-                  refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Inputs[Lookup Input]"
+                  refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Inputs[Lookup Input]"
                   name="Lookup Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Inputs[Lookup Input].Columns[state_name]"
+                      refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Inputs[Lookup Input].Columns[state_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
@@ -17275,17 +17526,17 @@ where [refTable].[state_name] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output]"
+                  refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
                   exclusionGroup="1"
                   name="Lookup Match Output"
-                  synchronousInputId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]"
+                      refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]"
                       dataType="i4"
                       errorOrTruncationOperation="Copy Column"
-                      lineageId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]"
+                      lineageId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]"
                       name="state_code_sk"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -17299,106 +17550,30 @@ where [refTable].[state_name] = ?</property>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup No Match Output]"
+                  refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup No Match Output]"
                   description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
                   exclusionGroup="1"
                   name="Lookup No Match Output"
-                  synchronousInputId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Inputs[Lookup Input]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Error Output]"
+                  refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Lookup Error Output"
-                  synchronousInputId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Inputs[Lookup Input]">
+                  synchronousInputId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      refId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Stage_uscounties to nds_county\Delete Space"
-              componentClassID="Microsoft.DerivedColumn"
-              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
-              name="Delete Space"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\Stage_uscounties to nds_county\Delete Space.Inputs[Derived Column Input]"
-                  description="Input to the Derived Column Transformation"
-                  name="Derived Column Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Stage_uscounties to nds_county\Delete Space.Inputs[Derived Column Input].Columns[county]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="county"
-                      errorOrTruncationOperation="Computation"
-                      errorRowDisposition="FailComponent"
-                      lineageId="Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[county]"
-                      truncationRowDisposition="FailComponent"
-                      usageType="readWrite">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output].Columns[county]})</property>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Friendly Expression"
-                          expressionType="Notify"
-                          name="FriendlyExpression">TRIM(county)</property>
-                      </properties>
-                    </inputColumn>
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Output]"
-                  description="Default Output of the Derived Column Transformation"
-                  exclusionGroup="1"
-                  name="Derived Column Output"
-                  synchronousInputId="Package\Stage_uscounties to nds_county\Delete Space.Inputs[Derived Column Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Error Output]"
-                  description="Error Output of the Derived Column Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Derived Column Error Output"
-                  synchronousInputId="Package\Stage_uscounties to nds_county\Delete Space.Inputs[Derived Column Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -17533,7 +17708,7 @@ where [refTable].[state_name] = ?</property>
                       cachedDataType="i4"
                       cachedName="state_code_sk"
                       externalMetadataColumnId="Package\Stage_uscounties to nds_county\nds_county.Inputs[OLE DB Destination Input].ExternalColumns[state_code_sk]"
-                      lineageId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]" />
+                      lineageId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output].Columns[state_code_sk]" />
                     <inputColumn
                       refId="Package\Stage_uscounties to nds_county\nds_county.Inputs[OLE DB Destination Input].Columns[source_sk]"
                       cachedDataType="i4"
@@ -17955,25 +18130,30 @@ where [refTable].[state_name] = ?</property>
               refId="Package\Stage_uscounties to nds_county.Paths[Derived Column Output1]"
               endId="Package\Stage_uscounties to nds_county\Check if nds_county exists.Inputs[Lookup Input]"
               name="Derived Column Output"
-              startId="Package\Stage_uscounties to nds_county\Delete Space.Outputs[Derived Column Output]" />
+              startId="Package\Stage_uscounties to nds_county\Delete Space 2.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Stage_uscounties to nds_county.Paths[Derived Column Output2]"
+              endId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Inputs[Lookup Input]"
+              name="Derived Column Output"
+              startId="Package\Stage_uscounties to nds_county\Delete Space 1.Outputs[Derived Column Output]" />
             <path
               refId="Package\Stage_uscounties to nds_county.Paths[Lookup Match Output]"
-              endId="Package\Stage_uscounties to nds_county\Check source_sk foreign key.Inputs[Lookup Input]"
-              name="Lookup Match Output"
-              startId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Outputs[Lookup Match Output]" />
-            <path
-              refId="Package\Stage_uscounties to nds_county.Paths[Lookup Match Output1]"
               endId="Package\Stage_uscounties to nds_county\Add Created, Updated Date.Inputs[Derived Column Input]"
               name="Lookup Match Output"
               startId="Package\Stage_uscounties to nds_county\Check source_sk foreign key.Outputs[Lookup Match Output]" />
             <path
+              refId="Package\Stage_uscounties to nds_county.Paths[Lookup Match Output1]"
+              endId="Package\Stage_uscounties to nds_county\Delete Space 2.Inputs[Derived Column Input]"
+              name="Lookup Match Output"
+              startId="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key.Outputs[Lookup Match Output]" />
+            <path
               refId="Package\Stage_uscounties to nds_county.Paths[Lookup No Match Output]"
-              endId="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key.Inputs[Lookup Input]"
+              endId="Package\Stage_uscounties to nds_county\Check source_sk foreign key.Inputs[Lookup Input]"
               name="Lookup No Match Output"
               startId="Package\Stage_uscounties to nds_county\Check if nds_county exists.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\Stage_uscounties to nds_county.Paths[OLE DB Source Output]"
-              endId="Package\Stage_uscounties to nds_county\Delete Space.Inputs[Derived Column Input]"
+              endId="Package\Stage_uscounties to nds_county\Delete Space 1.Inputs[Derived Column Input]"
               name="OLE DB Source Output"
               startId="Package\Stage_uscounties to nds_county\Stage_uscounties.Outputs[OLE DB Source Output]" />
           </paths>
@@ -19592,7 +19772,7 @@ where [refTable].[source_id] = ?</property>
         <NodeLayout
           Size="265.6,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_category"
-          TopLeft="993.803176384557,423.215686077294" />
+          TopLeft="993.088890668751,430.098039012438" />
         <NodeLayout
           Size="256.8,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_county"
@@ -19608,7 +19788,7 @@ where [refTable].[source_id] = ?</property>
         <NodeLayout
           Size="239.2,41.6"
           Id="Package\Stage_state_AQI_2022 to nds_aqi"
-          TopLeft="82.0793644621975,518.94771251311" />
+          TopLeft="82.9722216069553,541.697712493169" />
         <NodeLayout
           Size="265.6,41.6"
           Id="Package\Stage_state_AQI_2022 to nds_category"
@@ -19628,7 +19808,7 @@ where [refTable].[source_id] = ?</property>
         <NodeLayout
           Size="239.2,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_aqi"
-          TopLeft="386.444444475193,522.750326977918" />
+          TopLeft="389.123015909466,543.779738724191" />
         <NodeLayout
           Size="265.6,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_category"
@@ -19636,7 +19816,7 @@ where [refTable].[source_id] = ?</property>
         <NodeLayout
           Size="256.8,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_county"
-          TopLeft="994.076191891632,342.467973783221" />
+          TopLeft="993.361906175826,342.467973783221" />
         <NodeLayout
           Size="252,41.6"
           Id="Package\Stage_state_aqi_2023 to nds_source"
@@ -19725,18 +19905,18 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 11]"
-          TopLeft="1124.53968413809,384.067973783221">
+          TopLeft="1123.82539842229,384.067973783221">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,39.1477122940728"
+              EndConnector="0,46.030065229217"
               Start="0,0"
-              End="0,31.6477122940728">
+              End="0,38.530065229217">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,31.6477122940728" />
+                    End="0,38.530065229217" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -19769,18 +19949,18 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 13]"
-          TopLeft="993.803176384557,446.009150093162">
+          TopLeft="993.088890668751,449.450326560734">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-51.092064121562,0"
+              EndConnector="-50.3777784057557,0"
               Start="0,0"
-              End="-43.592064121562,0">
+              End="-42.8777784057557,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-43.592064121562,0" />
+                    End="-42.8777784057557,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -19813,18 +19993,18 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 19]"
-          TopLeft="203.290475817523,475.15555544667">
+          TopLeft="203.736904389902,475.15555544667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,43.7921570664407"
+              EndConnector="0,66.542157046499"
               Start="0,0"
-              End="0,36.2921570664407">
+              End="0,59.042157046499">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.2921570664407" />
+                    End="0,59.042157046499" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -19857,18 +20037,18 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 20]"
-          TopLeft="321.279364462198,541.649019745514">
+          TopLeft="322.172221606955,563.53872560868">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="65.165080012995,0"
+              EndConnector="66.950794302511,0"
               Start="0,0"
-              End="57.665080012995,0">
+              End="59.450794302511,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="57.665080012995,0" />
+                    End="59.450794302511,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -19949,14 +20129,14 @@ where [refTable].[source_id] = ?</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="49.5015879119948,0"
+              EndConnector="48.787302196189,0"
               Start="0,0"
-              End="42.0015879119948,0">
+              End="41.287302196189,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="42.0015879119948,0" />
+                    End="41.287302196189,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -20040,10 +20220,6 @@ where [refTable].[source_id] = ?</property>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="152,41.6"
-          Id="Package\Stage_state_AQI_2021 to nds_aqi\Update nds_aqi"
-          TopLeft="423.749993685633,367.599996453524" />
-        <NodeLayout
           Size="140,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_aqi\Delete Space"
           TopLeft="386.249994244426,154.050002663582" />
@@ -20068,13 +20244,17 @@ where [refTable].[source_id] = ?</property>
           Id="Package\Stage_state_AQI_2021 to nds_aqi\Check county_code_sk foreign key"
           TopLeft="668.499990038569,158.050002603978" />
         <NodeLayout
+          Size="140,41.6"
+          Id="Package\Stage_state_AQI_2021 to nds_aqi\Delete Space 2"
+          TopLeft="1072.24998402223,158.250005628913" />
+        <NodeLayout
           Size="222.4,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_aqi\Check category_sk foreign key"
           TopLeft="1025.24998472258,261.650002574175" />
         <NodeLayout
-          Size="140,41.6"
-          Id="Package\Stage_state_AQI_2021 to nds_aqi\Delete Space 2"
-          TopLeft="1072.24998402223,158.250005628913" />
+          Size="152,41.6"
+          Id="Package\Stage_state_AQI_2021 to nds_aqi\Update nds_aqi"
+          TopLeft="423.749993685633,367.599996453524" />
         <NodeLayout
           Size="235.2,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_aqi\Check state_code_sk_foreign key"
@@ -20393,7 +20573,7 @@ where [refTable].[source_id] = ?</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\Check state_code_sk_foreign key">
+    design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\Check county_fips_sk, state_code_sk, date exist">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -20403,7 +20583,7 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string">[dbo].[nds_state]</Value>
+          type="q3:string"></Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
@@ -20439,7 +20619,7 @@ where [refTable].[source_id] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\Check county_fips_sk, state_code_sk, date exist">
+    design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\Check state_code_sk_foreign key">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -20449,7 +20629,7 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string"></Value>
+          type="q3:string">[dbo].[nds_state]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
@@ -20470,25 +20650,12 @@ where [refTable].[source_id] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\nds_aqi">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\Check county_code_sk foreign key">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:boolean">false</Value>
+          type="q2:string">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -20498,10 +20665,23 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:int">0</Value>
+          type="q4:string">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Stage_state_AQI_2021 to nds_aqi\nds_aqi">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -20553,9 +20733,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -20577,9 +20755,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -20632,7 +20808,7 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_state_AQI_2021 to nds_category.Paths[Derived Column Output1]"
-          TopLeft="615.299993018806,287.199999582767">
+          TopLeft="615.299993018805,287.199999582767">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -20649,9 +20825,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -20730,9 +20904,9 @@ where [refTable].[source_id] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="212,41.6"
-          Id="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists"
-          TopLeft="371.999994456767,210.999996855855" />
+          Size="303.2,41.6"
+          Id="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists"
+          TopLeft="339.999994933604,210.999996855855" />
         <NodeLayout
           Size="188,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_county\Stage_AQI_State_2021"
@@ -20741,6 +20915,10 @@ where [refTable].[source_id] = ?</property>
           Size="132,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_county\nds_county"
           TopLeft="843.99998742342,393.999994128942" />
+        <NodeLayout
+          Size="232.8,41.6"
+          Id="Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key"
+          TopLeft="366.999994531274,131.799998226762" />
         <NodeLayout
           Size="140,41.6"
           Id="Package\Stage_state_AQI_2021 to nds_county\Delete Space"
@@ -20780,6 +20958,114 @@ where [refTable].[source_id] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup No Match Output]"
+          TopLeft="540.799994933604,252.599996855855">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="105.599997019769,60.40000038743"
+              Start="0,0"
+              End="105.599997019769,52.90000038743">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.3502363766647" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.3502363766647"
+                    Point2="0,24.3502363766647"
+                    Point3="4,24.3502363766647" />
+                  <mssgle:LineSegment
+                    End="101.599997019769,24.3502363766647" />
+                  <mssgle:CubicBezierSegment
+                    Point1="101.599997019769,24.3502363766647"
+                    Point2="105.599997019769,24.3502363766647"
+                    Point3="105.599997019769,28.3502363766647" />
+                  <mssgle:LineSegment
+                    End="105.599997019769,52.90000038743" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-3.00638820886549,29.3502363766647,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output2]"
+          TopLeft="483.399994531274,173.399998226762">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="8.20000040233015,37.599998629093"
+              Start="0,0"
+              End="8.20000040233015,30.099998629093">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.7999993145465" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.7999993145465"
+                    Point2="0,18.7999993145465"
+                    Point3="4,18.7999993145465" />
+                  <mssgle:LineSegment
+                    End="4.20000040233015,18.7999993145465" />
+                  <mssgle:CubicBezierSegment
+                    Point1="4.20000040233015,18.7999993145465"
+                    Point2="8.20000040233015,18.7999993145465"
+                    Point3="8.20000040233015,22.7999993145465" />
+                  <mssgle:LineSegment
+                    End="8.20000040233015,30.099998629093" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-44.0913865175849,23.7999993145465,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output1]"
+          TopLeft="442.399994933604,252.599996855855">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-112.199998614191,59.799998882413"
+              Start="0,0"
+              End="-112.199998614191,52.299998882413">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.1083460061382" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.1083460061382"
+                    Point2="0,24.1083460061382"
+                    Point3="-4,24.1083460061382" />
+                  <mssgle:LineSegment
+                    End="-108.199998614191,24.1083460061382" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-108.199998614191,24.1083460061382"
+                    Point2="-112.199998614191,24.1083460061382"
+                    Point3="-112.199998614191,28.1083460061382" />
+                  <mssgle:LineSegment
+                    End="-112.199998614191,52.299998882413" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-104.291386025845,29.1083460061382,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output]"
           TopLeft="647.19999192357,354.599997243285">
           <EdgeLayout.Curve>
@@ -20804,32 +21090,6 @@ where [refTable].[source_id] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Derived Column Output]"
-          TopLeft="751.999991893768,417.299994091689">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="91.9999955296516,0"
-              Start="0,0"
-              End="84.4999955296516,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="84.4999955296516,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="232.8,41.6"
-          Id="Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key"
-          TopLeft="366.999994531274,131.799998226762" />
-        <EdgeLayout
           Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Derived Column Output1]"
           TopLeft="481.485708572791,106.599999031425">
           <EdgeLayout.Curve>
@@ -20852,111 +21112,37 @@ where [refTable].[source_id] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output1]"
-          TopLeft="477.999994456767,252.599996855855">
+          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Derived Column Output]"
+          TopLeft="751.999991893768,417.299994091689">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-147.799998137354,59.7999988824127"
+              EndConnector="91.9999955296516,0"
               Start="0,0"
-              End="-147.799998137354,52.2999988824127">
+              End="84.4999955296516,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,25.8999994412064" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,25.8999994412064"
-                    Point2="0,29.8999994412064"
-                    Point3="-4,29.8999994412064" />
-                  <mssgle:LineSegment
-                    End="-143.799998137354,29.8999994412064" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-143.799998137354,29.8999994412064"
-                    Point2="-147.799998137354,29.8999994412064"
-                    Point3="-147.799998137354,33.8999994412064" />
-                  <mssgle:LineSegment
-                    End="-147.799998137354,52.2999988824127" />
+                    End="84.4999955296516,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-122.091385787427,34.8999994412064,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup No Match Output]"
-          TopLeft="511.999994456767,252.599996855855">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="134.399997496606,60.4000003874297"
-              Start="0,0"
-              End="134.399997496606,52.9000003874297">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,20.4314608308705" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,20.4314608308705"
-                    Point2="0,24.4314608308705"
-                    Point3="4,24.4314608308705" />
-                  <mssgle:LineSegment
-                    End="130.399997496606,24.4314608308705" />
-                  <mssgle:CubicBezierSegment
-                    Point1="130.399997496606,24.4314608308705"
-                    Point2="134.399997496606,24.4314608308705"
-                    Point3="134.399997496606,28.4314608308705" />
-                  <mssgle:LineSegment
-                    End="134.399997496606,52.9000003874297" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="11.3936120295528,29.4314608308705,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_state_AQI_2021 to nds_county.Paths[Lookup Match Output2]"
-          TopLeft="480.699994494021,173.399998226762">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,37.5999986290937"
-              Start="0,0"
-              End="0,30.0999986290937">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,30.0999986290937" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,9.24531181454685,96.3827734375,11.609375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2021 to nds_county\Check if county_name exists">
+    design-time-name="Package\Stage_state_AQI_2021 to nds_county\Check if county_name and state_code_sk exists">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -20991,6 +21177,16 @@ where [refTable].[source_id] = ?</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -21234,9 +21430,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -21354,9 +21548,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -21378,9 +21570,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -21459,10 +21649,6 @@ where [refTable].[source_id] = ?</property>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="152,41.6"
-          Id="Package\Stage_state_AQI_2022 to nds_aqi\Update nds_aqi"
-          TopLeft="9.99999985098842,369.599996006489" />
-        <NodeLayout
           Size="140,41.6"
           Id="Package\Stage_state_AQI_2022 to nds_aqi\Delete Space"
           TopLeft="319.999995231628,133.000005587935" />
@@ -21487,13 +21673,17 @@ where [refTable].[source_id] = ?</property>
           Id="Package\Stage_state_AQI_2022 to nds_aqi\Check county_code_sk foreign key"
           TopLeft="576.249991413201,124.000005722046" />
         <NodeLayout
-          Size="222.4,41.6"
-          Id="Package\Stage_state_AQI_2022 to nds_aqi\Check category_sk foreign key"
-          TopLeft="376.199994441867,236.400002533197" />
-        <NodeLayout
           Size="140,41.6"
           Id="Package\Stage_state_AQI_2022 to nds_aqi\Delete Space 2"
           TopLeft="675.999989926815,237.19999949336" />
+        <NodeLayout
+          Size="222.4,41.6"
+          Id="Package\Stage_state_AQI_2022 to nds_aqi\Check category_sk foreign key"
+          TopLeft="419.199993801117,238.400002503395" />
+        <NodeLayout
+          Size="152,41.6"
+          Id="Package\Stage_state_AQI_2022 to nds_aqi\Update nds_aqi"
+          TopLeft="9.99999985098842,369.599996006489" />
         <NodeLayout
           Size="235.2,41.6"
           Id="Package\Stage_state_AQI_2022 to nds_aqi\Check state_code_sk_foreign key"
@@ -21525,7 +21715,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -21602,25 +21794,25 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_state_AQI_2022 to nds_aqi.Paths[Lookup Match Output3]"
-          TopLeft="376.199994441867,259.800000223518">
+          TopLeft="419.199993801117,260.800000208616">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-56.5999946504833,0"
+              EndConnector="-99.5999940097332,0"
               Start="0,0"
-              End="-49.0999946504833,0">
+              End="-92.0999940097332,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-49.0999946504833,0" />
+                    End="-92.0999940097332,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-72.7413840439917,5,96.3827734375,11.609375"
+              BoundingBox="-94.2413837236166,5,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -21710,24 +21902,26 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_state_AQI_2022 to nds_aqi.Paths[Derived Column Output3]"
-          TopLeft="675.999989926815,257.600001013279">
+          TopLeft="675.999989926815,258.600000998377">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-77.3999954849478,0"
+              EndConnector="-34.399996125698,0"
               Start="0,0"
-              End="-69.8999954849478,0">
+              End="-26.899996125698,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-69.8999954849478,0" />
+                    End="-26.899996125698,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -21749,7 +21943,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -21771,7 +21967,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -21793,14 +21991,16 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2022 to nds_aqi\Check state_code_sk_foreign key">
+    design-time-name="Package\Stage_state_AQI_2022 to nds_aqi\Check county_fips_sk, state_code_sk, date exist">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -21810,7 +22010,7 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string">[dbo].[nds_state]</Value>
+          type="q3:string"></Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
@@ -21846,8 +22046,54 @@ where [refTable].[source_id] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\Stage_state_AQI_2022 to nds_aqi\Check state_code_sk_foreign key">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[nds_state]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\Stage_state_AQI_2022 to nds_aqi\Stage_AQI_state_2022">
     <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Stage_state_AQI_2022 to nds_aqi\Check county_code_sk foreign key">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[nds_county]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
@@ -21863,29 +22109,6 @@ where [refTable].[source_id] = ?</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2022 to nds_aqi\Check county_code_sk foreign key">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[dbo].[nds_county]</Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:string">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -22078,8 +22301,8 @@ where [refTable].[source_id] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="194.4,41.6"
-          Id="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists"
+          Size="303.2,41.6"
+          Id="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists"
           TopLeft="369.999994486569,205.99999693036" />
         <NodeLayout
           Size="188,41.6"
@@ -22144,6 +22367,78 @@ where [refTable].[source_id] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup No Match Output]"
+          TopLeft="570.799994486569,247.59999693036">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="45.599997913839,44.000000238419"
+              Start="0,0"
+              End="45.599997913839,36.500000238419">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.7385827732839" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.7385827732839"
+                    Point2="0,17.7385827732839"
+                    Point3="4,17.7385827732839" />
+                  <mssgle:LineSegment
+                    End="41.599997913839,17.7385827732839" />
+                  <mssgle:CubicBezierSegment
+                    Point1="41.599997913839,17.7385827732839"
+                    Point2="45.599997913839,17.7385827732839"
+                    Point3="45.599997913839,21.7385827732839" />
+                  <mssgle:LineSegment
+                    End="45.599997913839,36.500000238419" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-33.0063877618305,22.7385827732839,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output2]"
+          TopLeft="477.39999462068,171.599999672174">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="44.199999865889,34.399997258186"
+              Start="0,0"
+              End="44.199999865889,26.899997258186">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.199998629093" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.199998629093"
+                    Point2="0,17.199998629093"
+                    Point3="4,17.199998629093" />
+                  <mssgle:LineSegment
+                    End="40.199999865889,17.199998629093" />
+                  <mssgle:CubicBezierSegment
+                    Point1="40.199999865889,17.199998629093"
+                    Point2="44.199999865889,17.199998629093"
+                    Point3="44.199999865889,21.199998629093" />
+                  <mssgle:LineSegment
+                    End="44.199999865889,26.899997258186" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-26.0913867858055,22.199998629093,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output1]"
           TopLeft="614.199992415309,341.999997168779">
           <EdgeLayout.Curve>
@@ -22169,60 +22464,38 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output]"
-          TopLeft="436.133327819903,247.59999693036">
+          TopLeft="472.399994486569,247.59999693036">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-101.933331560094,51.7999990016227"
+              EndConnector="-138.19999822676,51.799999001623"
               Start="0,0"
-              End="-101.933331560094,44.2999990016227">
+              End="-138.19999822676,44.299999001623">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,16.9737138814733" />
+                    End="0,16.8831492038039" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,16.9737138814733"
-                    Point2="0,20.9737138814733"
-                    Point3="-4,20.9737138814733" />
+                    Point1="0,16.8831492038039"
+                    Point2="0,20.8831492038039"
+                    Point3="-4,20.8831492038039" />
                   <mssgle:LineSegment
-                    End="-97.9333315600936,20.9737138814733" />
+                    End="-134.19999822676,20.8831492038039" />
                   <mssgle:CubicBezierSegment
-                    Point1="-97.9333315600936,20.9737138814733"
-                    Point2="-101.933331560094,20.9737138814733"
-                    Point3="-101.933331560094,24.9737138814733" />
+                    Point1="-134.19999822676,20.8831492038039"
+                    Point2="-138.19999822676,20.8831492038039"
+                    Point3="-138.19999822676,24.8831492038039" />
                   <mssgle:LineSegment
-                    End="-101.933331560094,44.2999990016227" />
+                    End="-138.19999822676,44.299999001623" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-99.1580524987968,25.9737138814733,96.3827734375,11.609375"
+              BoundingBox="-117.29138583213,25.8831492038039,96.3827734375,11.609375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Derived Column Output]"
-          TopLeft="715.99999243021,389.799994501471">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="89.9999955594542,0"
-              Start="0,0"
-              End="82.4999955594542,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="82.4999955594542,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -22260,87 +22533,37 @@ where [refTable].[source_id] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup Match Output2]"
-          TopLeft="477.39999462068,171.599999672174">
+          Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Derived Column Output]"
+          TopLeft="715.99999243021,389.799994501471">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-10.2000001341112,34.3999972581865"
+              EndConnector="89.9999955594542,0"
               Start="0,0"
-              End="-10.2000001341112,26.8999972581865">
+              End="82.4999955594542,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,13.1999986290933" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,13.1999986290933"
-                    Point2="0,17.1999986290933"
-                    Point3="-4,17.1999986290933" />
-                  <mssgle:LineSegment
-                    End="-6.20000013411118,17.1999986290933" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-6.20000013411118,17.1999986290933"
-                    Point2="-10.2000001341112,17.1999986290933"
-                    Point3="-10.2000001341112,21.1999986290933" />
-                  <mssgle:LineSegment
-                    End="-10.2000001341112,26.8999972581865" />
+                    End="82.4999955594542,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-53.2913867858056,22.1999986290933,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_state_AQI_2022 to nds_county.Paths[Lookup No Match Output]"
-          TopLeft="498.266661153236,247.59999693036">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="118.133331247172,44.0000002384183"
-              Start="0,0"
-              End="118.133331247172,36.5000002384183">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,13.8155103006167" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,13.8155103006167"
-                    Point2="0,17.8155103006167"
-                    Point3="4,17.8155103006167" />
-                  <mssgle:LineSegment
-                    End="114.133331247172,17.8155103006167" />
-                  <mssgle:CubicBezierSegment
-                    Point1="114.133331247172,17.8155103006167"
-                    Point2="118.133331247172,17.8155103006167"
-                    Point3="118.133331247172,21.8155103006167" />
-                  <mssgle:LineSegment
-                    End="118.133331247172,36.5000002384183" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="3.26027890483603,22.8155103006167,111.6127734375,11.609375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2022 to nds_county\Check if nds_state exists">
+    design-time-name="Package\Stage_state_AQI_2022 to nds_county\Check if county_name and state_code_sk exists">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -22350,7 +22573,7 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -22422,7 +22645,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -22516,7 +22741,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -22595,9 +22822,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -22715,9 +22940,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -22739,9 +22962,7 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -22797,10 +23018,6 @@ where [refTable].[source_id] = ?</property>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="152,41.6"
-          Id="Package\Stage_state_AQI_2023 to nds_aqi\Update nds_aqi"
-          TopLeft="25.7142857690247,387.929411535465" />
-        <NodeLayout
           Size="140,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_aqi\Delete Space"
           TopLeft="451.714280357774,199.835292643102" />
@@ -22825,13 +23042,17 @@ where [refTable].[source_id] = ?</property>
           Id="Package\Stage_state_AQI_2023 to nds_aqi\Check county_code_sk foreign key"
           TopLeft="729.857133562771,206.385297504606" />
         <NodeLayout
+          Size="140,41.6"
+          Id="Package\Stage_state_AQI_2023 to nds_aqi\Delete Space 2"
+          TopLeft="787.714271263808,290.105880677257" />
+        <NodeLayout
           Size="222.4,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_aqi\Check category_sk foreign key"
           TopLeft="427.57141383114,285.105887045312" />
         <NodeLayout
-          Size="140,41.6"
-          Id="Package\Stage_state_AQI_2023 to nds_aqi\Delete Space 2"
-          TopLeft="787.714271263808,290.105880677257" />
+          Size="152,41.6"
+          Id="Package\Stage_state_AQI_2023 to nds_aqi\Update nds_aqi"
+          TopLeft="25.7142857690247,387.929411535465" />
         <NodeLayout
           Size="235.2,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_aqi\Check state_code_sk_foreign key"
@@ -22863,7 +23084,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23053,7 +23276,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23075,7 +23300,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23097,7 +23324,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23119,7 +23348,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -23134,6 +23365,16 @@ where [refTable].[source_id] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\Stage_state_AQI_2023 to nds_aqi\Check county_code_sk foreign key">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\Stage_state_AQI_2023 to nds_aqi\nds_aqi">
     <Properties>
       <Property>
@@ -23143,16 +23384,6 @@ where [refTable].[source_id] = ?</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2023 to nds_aqi\Check county_code_sk foreign key">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -23345,57 +23576,107 @@ where [refTable].[source_id] = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="194.4,41.6"
-          Id="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists"
-          TopLeft="391.999994158744,215.411761613968" />
-        <NodeLayout
           Size="188,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_county\Stage_AQI_State_2023"
           TopLeft="388.285709381712,10.4705889518903" />
+        <NodeLayout
+          Size="303.2,41.6"
+          Id="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists"
+          TopLeft="390.999994173645,215.411761613968" />
         <NodeLayout
           Size="132,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_county\nds_county"
           TopLeft="793.999988168478,404.999993965029" />
         <NodeLayout
-          Size="232.8,41.6"
-          Id="Package\Stage_state_AQI_2023 to nds_county\Check state_code_sk foreign key"
-          TopLeft="379.999994337559,149.599999284743" />
-        <NodeLayout
-          Size="140,41.6"
-          Id="Package\Stage_state_AQI_2023 to nds_county\Delete Space"
-          TopLeft="405.999994120428,81.6588238694564" />
+          Size="166.4,41.6"
+          Id="Package\Stage_state_AQI_2023 to nds_county\Update State Code"
+          TopLeft="250.999996259809,298.399995946884" />
         <NodeLayout
           Size="212.8,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_county\Check source_sk foreign key"
           TopLeft="521.999992221594,320.599996736645" />
         <NodeLayout
+          Size="140,41.6"
+          Id="Package\Stage_state_AQI_2023 to nds_county\Delete Space"
+          TopLeft="405.999994120428,81.6588238694564" />
+        <NodeLayout
+          Size="232.8,41.6"
+          Id="Package\Stage_state_AQI_2023 to nds_county\Check state_code_sk foreign key"
+          TopLeft="379.999994337559,149.599999284743" />
+        <NodeLayout
           Size="208,41.6"
           Id="Package\Stage_state_AQI_2023 to nds_county\Add Created, Updated Date"
           TopLeft="529.999992102384,402.999993994832" />
-        <NodeLayout
-          Size="166.4,41.6"
-          Id="Package\Stage_state_AQI_2023 to nds_county\Update State Code"
-          TopLeft="250.999996259809,298.399995946884" />
         <EdgeLayout
-          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[OLE DB Source Output]"
-          TopLeft="479.14285175107,52.0705889518903">
+          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup No Match Output]"
+          TopLeft="591.799994173645,257.011761613968">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,29.5882349175661"
+              EndConnector="36.5999980479488,63.588235122677"
               Start="0,0"
-              End="0,22.0882349175661">
+              End="36.5999980479488,56.088235122677">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.0882349175661" />
+                    End="0,21.635571954969" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.635571954969"
+                    Point2="0,25.635571954969"
+                    Point3="4,25.635571954969" />
+                  <mssgle:LineSegment
+                    End="32.5999980479488,25.635571954969" />
+                  <mssgle:CubicBezierSegment
+                    Point1="32.5999980479488,25.635571954969"
+                    Point2="36.5999980479488,25.635571954969"
+                    Point3="36.5999980479488,29.635571954969" />
+                  <mssgle:LineSegment
+                    End="36.5999980479488,56.088235122677" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-37.5063876947756,30.635571954969,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup Match Output2]"
+          TopLeft="496.399994337559,191.199999284743">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="46.1999998360862,24.211762329225"
+              Start="0,0"
+              End="46.1999998360862,16.711762329225">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,8.1058811646125" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,8.1058811646125"
+                    Point2="0,12.1058811646125"
+                    Point3="4,12.1058811646125" />
+                  <mssgle:LineSegment
+                    End="42.1999998360862,12.1058811646125" />
+                  <mssgle:CubicBezierSegment
+                    Point1="42.1999998360862,12.1058811646125"
+                    Point2="46.1999998360862,12.1058811646125"
+                    Point3="46.1999998360862,16.1058811646125" />
+                  <mssgle:LineSegment
+                    End="46.1999998360862,16.711762329225" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-25.0913868007069,17.1058811646125,96.3827734375,11.609375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23424,60 +23705,38 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup Match Output]"
-          TopLeft="489.199994158744,257.011761613968">
+          TopLeft="493.399994173645,257.011761613968">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-154.999997898935,41.3882343329157"
+              EndConnector="-159.199997913836,41.388234332916"
               Start="0,0"
-              End="-154.999997898935,33.8882343329157">
+              End="-159.199997913836,33.888234332916">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,16.6941171664578" />
+                    End="0,12.6856503767346" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,16.6941171664578"
-                    Point2="0,20.6941171664578"
-                    Point3="-4,20.6941171664578" />
+                    Point1="0,12.6856503767346"
+                    Point2="0,16.6856503767346"
+                    Point3="-4,16.6856503767346" />
                   <mssgle:LineSegment
-                    End="-150.999997898935,20.6941171664578" />
+                    End="-155.199997913836,16.6856503767346" />
                   <mssgle:CubicBezierSegment
-                    Point1="-150.999997898935,20.6941171664578"
-                    Point2="-154.999997898935,20.6941171664578"
-                    Point3="-154.999997898935,24.6941171664578" />
+                    Point1="-155.199997913836,16.6856503767346"
+                    Point2="-159.199997913836,16.6856503767346"
+                    Point3="-159.199997913836,20.6856503767346" />
                   <mssgle:LineSegment
-                    End="-154.999997898935,33.8882343329157" />
+                    End="-159.199997913836,33.888234332916" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-125.691385668218,25.6941171664578,96.3827734375,11.609375"
+              BoundingBox="-127.791385675668,21.6856503767346,96.3827734375,11.609375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Derived Column Output]"
-          TopLeft="737.999992102384,424.79999397993">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="55.999996066094,0"
-              Start="0,0"
-              End="48.499996066094,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="48.499996066094,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23515,75 +23774,67 @@ where [refTable].[source_id] = ?</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup Match Output2]"
-          TopLeft="492.799994248152,191.199999284743">
+          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Derived Column Output]"
+          TopLeft="737.999992102384,424.79999397993">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,24.211762329225"
+              EndConnector="55.999996066094,0"
               Start="0,0"
-              End="0,16.711762329225">
+              End="48.499996066094,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,16.711762329225" />
+                    End="48.499996066094,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,2.55119366461251,96.3827734375,11.609375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[Lookup No Match Output]"
-          TopLeft="520.266660825411,257.011761613968">
+          Id="Package\Stage_state_AQI_2023 to nds_county.Paths[OLE DB Source Output]"
+          TopLeft="479.14285175107,52.0705889518903">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="108.133331396183,63.5882351226766"
+              EndConnector="0,29.5882349175661"
               Start="0,0"
-              End="108.133331396183,56.0882351226766">
+              End="0,22.0882349175661">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,21.7467466292633" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,21.7467466292633"
-                    Point2="0,25.7467466292633"
-                    Point3="4,25.7467466292633" />
-                  <mssgle:LineSegment
-                    End="104.133331396183,25.7467466292633" />
-                  <mssgle:CubicBezierSegment
-                    Point1="104.133331396183,25.7467466292633"
-                    Point2="108.133331396183,25.7467466292633"
-                    Point3="108.133331396183,29.7467466292633" />
-                  <mssgle:LineSegment
-                    End="108.133331396183,56.0882351226766" />
+                    End="0,22.0882349175661" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-1.73972102065859,30.7467466292633,111.6127734375,11.609375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2023 to nds_county\Check if nds_state exists">
+    design-time-name="Package\Stage_state_AQI_2023 to nds_county\Stage_AQI_State_2023">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Stage_state_AQI_2023 to nds_county\Check if county_name and state_code_sk exists">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -23593,16 +23844,8 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2023 to nds_county\Stage_AQI_State_2023">
-    <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
@@ -23865,7 +24108,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23989,7 +24234,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -24011,7 +24258,9 @@ where [refTable].[source_id] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -24046,139 +24295,69 @@ where [refTable].[source_id] = ?</property>
         <NodeLayout
           Size="202.4,41.6"
           Id="Package\Stage_uscounties to nds_county\Check if nds_county exists"
-          TopLeft="512.239789234643,143.119747707093" />
+          TopLeft="1022.23978163505,110.392475900983" />
         <NodeLayout
           Size="132,41.6"
           Id="Package\Stage_uscounties to nds_county\nds_county"
-          TopLeft="558.989789283071,455.016804833733" />
+          TopLeft="346.262519725682,251.380444665276" />
         <NodeLayout
-          Size="232.8,41.6"
-          Id="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key"
-          TopLeft="502.999992504716,219.799997332692" />
+          Size="220.8,41.6"
+          Id="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key"
+          TopLeft="463.909083996307,111.618181196397" />
         <NodeLayout
-          Size="140,41.6"
-          Id="Package\Stage_uscounties to nds_county\Delete Space"
-          TopLeft="546.999991849065,75.6168120011915" />
+          Size="148.8,41.6"
+          Id="Package\Stage_uscounties to nds_county\Delete Space 2"
+          TopLeft="787.909079168331,111.071357360911" />
         <NodeLayout
           Size="212.8,41.6"
           Id="Package\Stage_uscounties to nds_county\Check source_sk foreign key"
-          TopLeft="516.9999922961,301.816808737837" />
+          TopLeft="1012.4545303678,244.544082752028" />
         <NodeLayout
           Size="208,41.6"
           Id="Package\Stage_uscounties to nds_county\Add Created, Updated Date"
-          TopLeft="512.999993249774,383.29369520131" />
+          TopLeft="610.272719073025,246.020970407594" />
         <NodeLayout
           Size="160.8,41.6"
           Id="Package\Stage_uscounties to nds_county\Stage_uscounties"
-          TopLeft="531.14795243802,11.000000730157" />
-        <EdgeLayout
-          Id="Package\Stage_uscounties to nds_county.Paths[OLE DB Source Output]"
-          TopLeft="614.273972143542,52.6000007301569">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,23.0168112710345"
-              Start="0,0"
-              End="0,15.5168112710345">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,15.5168112710345" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_uscounties to nds_county.Paths[Lookup No Match Output]"
-          TopLeft="616.41989086968,184.719747707093">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,35.080249625599"
-              Start="0,0"
-              End="0,27.580249625599">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,27.580249625599" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-55.80638671875,7.9854373127995,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Stage_uscounties to nds_county.Paths[Lookup Match Output1]"
-          TopLeft="620.199992772937,343.416808737837">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,39.8768864634735"
-              Start="0,0"
-              End="0,32.3768864634735">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,32.3768864634735" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,10.3837557317367,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          TopLeft="59.3297776504768,110.999999673529" />
         <EdgeLayout
           Id="Package\Stage_uscounties to nds_county.Paths[Lookup Match Output]"
-          TopLeft="621.399992400408,261.399997332692">
+          TopLeft="1012.4545303678,266.082526579811">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,40.4168114051449"
+              EndConnector="-194.181811294772,0"
               Start="0,0"
-              End="0,32.9168114051449">
+              End="-186.681811294772,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,32.9168114051449" />
+                    End="-186.681811294772,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,10.6537182025724,96.3827734375,11.609375"
+              BoundingBox="-141.532292366136,5,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_uscounties to nds_county.Paths[Derived Column Output1]"
-          TopLeft="615.219890541854,117.216812001191">
+          TopLeft="936.709079168331,131.531916630947">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,25.9029357059016"
+              EndConnector="85.53070246672,0"
               Start="0,0"
-              End="0,18.4029357059016">
+              End="78.03070246672,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,18.4029357059016" />
+                    End="78.03070246672,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24189,24 +24368,120 @@ where [refTable].[source_id] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Stage_uscounties to nds_county.Paths[Derived Column Output]"
-          TopLeft="620.994891266423,424.89369520131">
+          TopLeft="610.272719073025,269.500707536435">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,30.1231096324224"
+              EndConnector="-132.010199347343,0"
               Start="0,0"
-              End="0,22.6231096324224">
+              End="-124.510199347343,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.6231096324224" />
+                    End="-124.510199347343,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_uscounties to nds_county.Paths[Lookup No Match Output]"
+          TopLeft="1121.14715600142,151.992475900983">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,92.5516068510451"
+              Start="0,0"
+              End="0,85.0516068510451">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,85.0516068510451" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-55.80638671875,36.7211159255225,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="148.8,41.6"
+          Id="Package\Stage_uscounties to nds_county\Delete Space 1"
+          TopLeft="266.6025018346,112.980448241554" />
+        <EdgeLayout
+          Id="Package\Stage_uscounties to nds_county.Paths[OLE DB Source Output]"
+          TopLeft="220.129777650477,132.790223957542">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="46.4727241841231,0"
+              Start="0,0"
+              End="38.9727241841231,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="38.9727241841231,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_uscounties to nds_county.Paths[Derived Column Output2]"
+          TopLeft="415.4025018346,133.099314718976">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="48.5065821617066,0"
+              Start="0,0"
+              End="41.0065821617066,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="41.0065821617066,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Stage_uscounties to nds_county.Paths[Lookup Match Output1]"
+          TopLeft="684.709083996307,132.144769278654">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="103.199995172024,0"
+              Start="0,0"
+              End="95.6999951720242,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="95.6999951720242,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-0.341389132737923,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -24218,7 +24493,7 @@ where [refTable].[source_id] = ?</property>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -24249,7 +24524,7 @@ where [refTable].[source_id] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Stage_uscounties to nds_county\Check state_code_sk foreign key">
+    design-time-name="Package\Stage_uscounties to nds_county\Get state_code_sk foreign key">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -24681,16 +24956,6 @@ where [refTable].[source_id] = ?</property>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Stage_state_AQI_2021 to nds_county\Check state_code_sk foreign key">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
