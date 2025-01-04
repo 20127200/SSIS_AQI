@@ -8,17 +8,17 @@
   <LastBuildInfos>
     <ProjectBuildItemInfo>
       <Name>SourceToStage.dtsx</Name>
-      <LastWriteTime>2025-01-03T06:37:20.054908Z</LastWriteTime>
+      <LastWriteTime>2025-01-03T13:47:13.3537955Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
       <Name>StageToNDS.dtsx</Name>
-      <LastWriteTime>2025-01-03T08:22:26.3553069Z</LastWriteTime>
+      <LastWriteTime>2025-01-03T13:47:13.2186831Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
       <Name>NDStoDDS.dtsx</Name>
-      <LastWriteTime>2025-01-03T06:37:19.9867852Z</LastWriteTime>
+      <LastWriteTime>2025-01-03T11:57:04.1737385Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
   </LastBuildInfos>

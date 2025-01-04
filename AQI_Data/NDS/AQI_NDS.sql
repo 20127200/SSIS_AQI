@@ -72,7 +72,7 @@ CREATE TABLE [nds_aqi] (
 	constraint nds_aqi_source_fk foreign key ([source_sk]) references [nds_source]([source_sk])
 )
 
-TRUNCATE 
+
 
 
 select* from nds_state where state_name = 'Ohio'
@@ -84,6 +84,8 @@ select* from nds_state
 
 select * from nds_aqi
 
+select count(*) from nds_aqi
+
 SELECT * FROM nds_county WHERE county_fips_sk = 33
 
 truncate table nds_aqi
@@ -93,7 +95,7 @@ select min(date) from nds_aqi
 select * from nds_aqi a 
 join nds_county b on a.county_fips_sk = b.county_fips_sk 
 join nds_state d on d.state_code_sk = b.state_code_sk 
-where county_name = 'Butler'  and state_name = 'Ohio'
+where county_name = 'Butler'  and state_name = 'Alabama'
 
 select * from nds_county a 
 join nds_state b on a.state_code_sk = b.state_code_sk 

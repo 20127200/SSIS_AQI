@@ -3,18 +3,6 @@
   "WorkspaceRootPath": "D:\\Document\\AQI_Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\Dim County 1.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
-      "RelativeMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|solutionrelative:AQI_Cube\\Dim County 1.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\Dim Date.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
-      "RelativeMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|solutionrelative:AQI_Cube\\Dim Date.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\AQI DDS.cube||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
-      "RelativeMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|solutionrelative:AQI_Cube\\AQI DDS.cube||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{30A4BCA8-30B5-4708-BD2C-A6C1BFB524E5}|AQI_Project\\AQI_Project.dtproj|D:\\Document\\AQI_Project\\AQI_Project\\NDStoDDS.dtsx||{CC84AFBD-DA02-46F4-8623-9F07E5569EDB}|Design",
       "RelativeMoniker": "D:0:0:{30A4BCA8-30B5-4708-BD2C-A6C1BFB524E5}|AQI_Project\\AQI_Project.dtproj|solutionrelative:AQI_Project\\NDStoDDS.dtsx||{CC84AFBD-DA02-46F4-8623-9F07E5569EDB}|Design"
     },
@@ -25,6 +13,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{30A4BCA8-30B5-4708-BD2C-A6C1BFB524E5}|AQI_Project\\AQI_Project.dtproj|D:\\Document\\AQI_Project\\AQI_Project\\SourceToStage.dtsx||{CC84AFBD-DA02-46F4-8623-9F07E5569EDB}|Design",
       "RelativeMoniker": "D:0:0:{30A4BCA8-30B5-4708-BD2C-A6C1BFB524E5}|AQI_Project\\AQI_Project.dtproj|solutionrelative:AQI_Project\\SourceToStage.dtsx||{CC84AFBD-DA02-46F4-8623-9F07E5569EDB}|Design"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\Dim County 1.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
+      "RelativeMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|solutionrelative:AQI_Cube\\Dim County 1.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\Dim Date.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
+      "RelativeMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|solutionrelative:AQI_Cube\\Dim Date.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\AQI DDS.cube||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
+      "RelativeMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|solutionrelative:AQI_Cube\\AQI DDS.cube||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design"
     },
     {
       "AbsoluteMoniker": "D:0:0:{ED41D725-5B25-4519-8917-31E34F64C6F3}|AQI_Cube\\AQI_Cube.dwproj|D:\\Document\\AQI_Project\\AQI_Cube\\Fact Aqi.dim||{B4191D15-2D32-45F2-906F-E91BBAAA6059}|Design",
@@ -42,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
@@ -57,15 +57,14 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "AQI DDS.cube [Design]",
               "DocumentMoniker": "D:\\Document\\AQI_Project\\AQI_Cube\\AQI DDS.cube",
               "RelativeDocumentMoniker": "AQI_Cube\\AQI DDS.cube",
               "ToolTip": "D:\\Document\\AQI_Project\\AQI_Cube\\AQI DDS.cube [Design]",
               "RelativeToolTip": "AQI_Cube\\AQI DDS.cube [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-30T06:28:01.111Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-12-30T06:28:01.111Z"
             },
             {
               "$type": "Document",
@@ -80,7 +79,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Dim County 1.dim [Design]",
               "DocumentMoniker": "D:\\Document\\AQI_Project\\AQI_Cube\\Dim County 1.dim",
               "RelativeDocumentMoniker": "AQI_Cube\\Dim County 1.dim",
@@ -92,19 +91,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Dim Date.dim [Design]",
               "DocumentMoniker": "D:\\Document\\AQI_Project\\AQI_Cube\\Dim Date.dim",
               "RelativeDocumentMoniker": "AQI_Cube\\Dim Date.dim",
               "ToolTip": "D:\\Document\\AQI_Project\\AQI_Cube\\Dim Date.dim [Design]",
               "RelativeToolTip": "AQI_Cube\\Dim Date.dim [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-22T16:19:15.553Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-12-22T16:19:15.553Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "SourceToStage.dtsx [Design]",
               "DocumentMoniker": "D:\\Document\\AQI_Project\\AQI_Project\\SourceToStage.dtsx",
               "RelativeDocumentMoniker": "AQI_Project\\SourceToStage.dtsx",
@@ -116,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "StageToNDS.dtsx [Design]",
               "DocumentMoniker": "D:\\Document\\AQI_Project\\AQI_Project\\StageToNDS.dtsx",
               "RelativeDocumentMoniker": "AQI_Project\\StageToNDS.dtsx",
@@ -128,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "NDStoDDS.dtsx [Design]",
               "DocumentMoniker": "D:\\Document\\AQI_Project\\AQI_Project\\NDStoDDS.dtsx",
               "RelativeDocumentMoniker": "AQI_Project\\NDStoDDS.dtsx",

@@ -71,7 +71,8 @@ select * from fact_aqi a
 join dim_county b on a.county_fips_sk = b.county_fips_sk 
 join dim_date c on a.date_sk = c.date_sk
 join dim_state d on d.state_code_sk = b.state_code_sk 
-where county_name = 'Sumter'and c.year = 2023 and state_name = 'Alabama'
+where county_name = 'Butler'and c.year = 2022 and state_name = 'Ohio'
+
 
 select * from fact_aqi a 
 join dim_county b on a.county_fips_sk = b.county_fips_sk 
@@ -85,6 +86,8 @@ select* from dim_county where state_code_sk = 1
 select * from dim_date
 
 select * from fact_aqi
+
+select count(*) from fact_aqi
 
 SELECT year, quarter, month, COUNT(*)
 FROM dim_date
