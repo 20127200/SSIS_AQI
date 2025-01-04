@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="NDStoDDS"
   DTS:PackageType="5"
-  DTS:VersionBuild="127"
-  DTS:VersionGUID="{2D035E78-70CA-4083-8922-B54C0FBA22AB}">
+  DTS:VersionBuild="129"
+  DTS:VersionGUID="{C724C443-C0D2-40B5-BD5A-99A05F297BFA}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -8936,7 +8936,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8982,7 +8984,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9004,7 +9008,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -9074,7 +9080,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9216,7 +9224,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9238,7 +9248,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -9390,7 +9402,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9412,7 +9426,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9458,7 +9474,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9480,7 +9498,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9514,7 +9534,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9536,7 +9558,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -9598,7 +9622,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-15.45359375,8.3569967756893,30.9071875,9.568359375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9633,7 +9659,7 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-114.448529576653,21.5860014926396,54.1827734375,11.43359375"
+              BoundingBox="-114.448529576653,21.5860014926396,93.9534765625,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9657,7 +9683,7 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-74.40298828125,14.6856043248801,148.8059765625,11.658203125"
+              BoundingBox="-74.40298828125,14.6856043248801,188.5766796875,11.658203125"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9680,7 +9706,9 @@ where [refTable].[state_code_sk] = ?</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-15.45359375,5.1864085364247,30.9071875,9.568359375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9715,7 +9743,7 @@ where [refTable].[state_code_sk] = ?</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="11.108950892097,21.5860014926396,157.0678125,11.6630859375"
+              BoundingBox="11.108950892097,21.5860014926396,196.838515625,11.6630859375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9802,57 +9830,57 @@ where [refTable].[state_code_sk] = ?</property>
           Id="Package\fact_aqi\Date processing"
           TopLeft="421.714296046569,220.994958758583" />
         <NodeLayout
-          Size="193.6,41.6"
-          Id="Package\fact_aqi\Lookup with dim_county"
-          TopLeft="1240.00815725888,112.126051342176" />
-        <NodeLayout
           Size="184.8,41.6"
           Id="Package\fact_aqi\Lookup with nds_state"
           TopLeft="463.999993085861,28" />
-        <NodeLayout
-          Size="245.6,41.6"
-          Id="Package\fact_aqi\Convert date from datetime to date"
-          TopLeft="309.42857254707,110.289077842032" />
-        <NodeLayout
-          Size="116,41.6"
-          Id="Package\fact_aqi\fact_aqi"
-          TopLeft="1099.63264155674,310.344540936053" />
-        <NodeLayout
-          Size="114.4,41.6"
-          Id="Package\fact_aqi\nds_aqi"
-          TopLeft="85.7142858967488,34.8487397001645" />
-        <NodeLayout
-          Size="182.4,41.6"
-          Id="Package\fact_aqi\Lookup with dim_date"
-          TopLeft="664.130618525802,219.781514761519" />
-        <NodeLayout
-          Size="146.4,41.6"
-          Id="Package\fact_aqi\delete space 3"
-          TopLeft="988.918355095883,112.630254424869" />
         <NodeLayout
           Size="185.6,41.6"
           Id="Package\fact_aqi\Lookup with dim_state"
           TopLeft="965.999985605478,29.9999999701977" />
         <NodeLayout
-          Size="267.2,41.6"
-          Id="Package\fact_aqi\Convert date from date to unicodestring"
-          TopLeft="52.7142952440356,226.700840994326" />
+          Size="116,41.6"
+          Id="Package\fact_aqi\fact_aqi"
+          TopLeft="1099.63264155674,310.344540936053" />
         <NodeLayout
-          Size="192.8,41.6"
-          Id="Package\fact_aqi\Lookup with nds_county"
-          TopLeft="246.530613280593,32.6638657524998" />
+          Size="179.2,41.6"
+          Id="Package\fact_aqi\Lookup dim_category"
+          TopLeft="702.999989524484,109.599999046326" />
         <NodeLayout
-          Size="137.6,41.6"
-          Id="Package\fact_aqi\delete space"
-          TopLeft="1272.36734447022,28.126052593874" />
+          Size="245.6,41.6"
+          Id="Package\fact_aqi\Convert date from datetime to date"
+          TopLeft="309.42857254707,110.289077842032" />
+        <NodeLayout
+          Size="114.4,41.6"
+          Id="Package\fact_aqi\nds_aqi"
+          TopLeft="56.1224490990617,30.4789918048351" />
         <NodeLayout
           Size="201.6,41.6"
           Id="Package\fact_aqi\Lookup with nds_category"
           TopLeft="696.61225036586,28.4789918346373" />
         <NodeLayout
-          Size="179.2,41.6"
-          Id="Package\fact_aqi\Lookup dim_category"
-          TopLeft="702.999989524484,109.599999046326" />
+          Size="146.4,41.6"
+          Id="Package\fact_aqi\delete space 3"
+          TopLeft="988.918355095883,112.630254424869" />
+        <NodeLayout
+          Size="193.6,41.6"
+          Id="Package\fact_aqi\Lookup with dim_county"
+          TopLeft="1240.00815725888,112.126051342176" />
+        <NodeLayout
+          Size="267.2,41.6"
+          Id="Package\fact_aqi\Convert date from date to unicodestring"
+          TopLeft="52.7142952440356,226.700840994326" />
+        <NodeLayout
+          Size="137.6,41.6"
+          Id="Package\fact_aqi\delete space"
+          TopLeft="1272.36734447022,28.126052593874" />
+        <NodeLayout
+          Size="192.8,41.6"
+          Id="Package\fact_aqi\Lookup with nds_county"
+          TopLeft="226.122449971843,32.6638657524998" />
+        <NodeLayout
+          Size="182.4,41.6"
+          Id="Package\fact_aqi\Lookup with dim_date"
+          TopLeft="664.130618525802,219.781514761519" />
         <NodeLayout
           Size="232.8,50.4"
           Id="Package\fact_aqi\Add created_date, updated_date"
@@ -9881,24 +9909,48 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[OLE DB Source Output]"
-          TopLeft="200.114285896749,54.5563027263321">
+          TopLeft="170.522449099062,52.3714287786675">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="46.4163273838444,0"
+              EndConnector="55.6000008727816,0"
               Start="0,0"
-              End="38.9163273838444,0">
+              End="48.1000008727816,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="38.9163273838444,0" />
+                    End="48.1000008727816,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact_aqi.Paths[Lookup Match Output6]"
+          TopLeft="846.530618525802,238.390759682989">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="191.55100817974,0"
+              Start="0,0"
+              End="184.05100817974,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="184.05100817974,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="43.8341173711201,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9975,25 +10027,25 @@ where [refTable].[state_code_sk] = ?</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\fact_aqi.Paths[Lookup Match Output2]"
-          TopLeft="439.330613280593,51.1319328762499">
+          TopLeft="418.922449971843,51.1319328762499">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="24.6693798052677,0"
+              EndConnector="45.0775431140178,0"
               Start="0,0"
-              End="17.1693798052677,0">
+              End="37.5775431140178,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="17.1693798052677,0" />
+                    End="37.5775431140178,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-39.6066968161162,5,96.3827734375,11.609375"
+              BoundingBox="-29.4026151617411,5,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -10167,56 +10219,9 @@ where [refTable].[state_code_sk] = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <EdgeLayout
-          Id="Package\fact_aqi.Paths[Lookup Match Output6]"
-          TopLeft="846.530618525802,238.390759682989">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="191.55100817974,0"
-              Start="0,0"
-              End="184.05100817974,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="184.05100817974,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="43.8341173711201,5,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup with dim_county">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:string">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[dbo].[dim_county]</Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:string">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\fact_aqi\Lookup with nds_state">
     <Properties>
@@ -10229,50 +10234,6 @@ where [refTable].[state_code_sk] = ?</property>
         <Name>UsedTableName</Name>
         <Value
           type="q3:string">[dbo].[nds_state]</Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:string">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\fact_aqi">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\nds_aqi">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup with dim_date">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:string">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[dbo].[dim_date]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
@@ -10308,7 +10269,20 @@ where [refTable].[state_code_sk] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup with nds_county">
+    design-time-name="Package\fact_aqi\fact_aqi">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\Lookup dim_category">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -10318,13 +10292,21 @@ where [refTable].[state_code_sk] = ?</property>
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string">[dbo].[nds_county]</Value>
+          type="q3:string">[dbo].[dim_category]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q4:string">0</Value>
       </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\nds_aqi">
+    <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
@@ -10354,7 +10336,7 @@ where [refTable].[state_code_sk] = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\fact_aqi\Lookup dim_category">
+    design-time-name="Package\fact_aqi\Lookup with dim_county">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
@@ -10364,7 +10346,53 @@ where [refTable].[state_code_sk] = ?</property>
       <Property>
         <Name>UsedTableName</Name>
         <Value
-          type="q3:string">[dbo].[dim_category]</Value>
+          type="q3:string">[dbo].[dim_county]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\Lookup with nds_county">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[nds_county]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact_aqi\Lookup with dim_date">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_date]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
